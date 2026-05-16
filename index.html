@@ -3,45 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>宇宙沙盘讨论群·星际控制台</title>
+    <title>宇宙沙盘讨论群 · 星际控制台</title>
     <link rel="icon" href="图像1.png" type="image/png" />
-    <!-- Font Awesome 6 免费图标库 -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ===== 跟随系统模式的色彩变量 ===== */
         :root {
-            --bg-gradient-light: #f2f6fc;
-            --bg-solid-light: #e9f0f8;
-            --card-bg-light: rgba(255, 255, 255, 0.85);
-            --card-bg-solid-light: #ffffff;
-            --text-primary-light: #1a2b3e;
-            --text-secondary-light: #314d6b;
-            --border-light: rgba(42, 92, 150, 0.2);
-            --accent-primary-light: #1d6ec5;
-            --accent-soft-light: #3a82d7;
-            --shadow-light: 0 8px 20px -6px rgba(0, 45, 80, 0.15);
-            --hover-bg-light: #e1efff;
-            --star-color-light: rgba(20, 40, 65, 0.3);
-            --star-glow-light: rgba(45, 110, 200, 0.2);
-            --role-desc-color: #5a6e85;
+            /* 浅色模式 (明亮通透) */
+            --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
+            --glass-bg-light: rgba(240, 248, 255, 0.4);
+            --glass-border-light: rgba(110, 160, 220, 0.45);
+            --card-glass-light: rgba(255, 255, 255, 0.7);
+            --text-primary-light: #13273f;
+            --text-secondary-light: #2a4a6e;
+            --accent-light: #1f7be0;
+            --accent-soft-light: #3f8cef;      /* 明亮蓝色 */
+            --btn-blue: #2c7be5;               /* 按钮蓝色 */
+            --shadow-glass: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
+            --star-base-light: rgba(80, 120, 180, 0.2);
+            --star-bright-light: rgba(100, 140, 200, 0.3);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-gradient-light: #0a0f17;
-                --bg-solid-light: #101a24;
-                --card-bg-light: rgba(15, 30, 45, 0.85);
-                --card-bg-solid-light: #1a2a38;
-                --text-primary-light: #eef4ff;
-                --text-secondary-light: #cbddf5;
-                --border-light: rgba(70, 140, 210, 0.35);
-                --accent-primary-light: #539eff;
-                --accent-soft-light: #2f6bc0;
-                --shadow-light: 0 12px 28px -8px #000000b0;
-                --hover-bg-light: #1f3b55;
-                --star-color-light: rgba(210, 230, 255, 0.45);
-                --star-glow-light: rgba(70, 150, 255, 0.3);
-                --role-desc-color: #b8ceff;
+                /* 深色模式 (深邃星空) */
+                --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
+                --glass-bg-light: rgba(18, 22, 30, 0.6);
+                --glass-border-light: rgba(140, 160, 190, 0.45);
+                --card-glass-light: rgba(28, 34, 44, 0.7);
+                --text-primary-light: #f0f3f8;
+                --text-secondary-light: #bfd4f0;
+                --accent-light: #7ca5e0;
+                --accent-soft-light: #6a9bdf;   /* 柔和蓝色 */
+                --btn-blue: #5f8bc9;             /* 深色模式按钮蓝 */
+                --shadow-glass: 0 20px 35px -12px #000000cc;
+                --star-base-light: rgba(210, 225, 250, 0.85);
+                --star-bright-light: rgba(255, 248, 210, 0.95);
             }
         }
 
@@ -53,22 +51,21 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-gradient-light);
+            background: var(--body-bg-light);
             color: var(--text-primary-light);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            transition: background-color 0.3s ease, color 0.2s;
             line-height: 1.5;
             position: relative;
+            transition: background 0.3s ease;
             overflow-x: hidden;
         }
 
-        /* 动态星空背景 */
-        body::before {
-            content: "";
+        /* ---------- 繁星层：深色模式才显示浓厚繁星，浅色模式只显示极淡星尘 ---------- */
+        .star-layer {
             position: fixed;
             top: 0;
             left: 0;
@@ -76,205 +73,198 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+        }
+
+        /* 默认（浅色模式）星星几乎不可见，仅保留一丝气氛 */
+        .star-layer::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
             background-image: 
-                radial-gradient(2px 2px at 15% 40%, var(--star-color-light) 1px, transparent 1px),
-                radial-gradient(3px 3px at 65% 85%, var(--star-color-light) 1px, transparent 1px),
-                radial-gradient(1.5px 1.5px at 92% 22%, var(--star-glow-light) 2px, transparent 2px),
-                radial-gradient(2.5px 2.5px at 8% 72%, var(--star-color-light) 1px, transparent 1px),
-                radial-gradient(2px 2px at 42% 13%, var(--star-glow-light) 1.5px, transparent 1.5px),
-                radial-gradient(3px 3px at 77% 49%, var(--star-color-light) 1.2px, transparent 1.2px),
-                radial-gradient(1.8px 1.8px at 33% 91%, var(--star-glow-light) 1px, transparent 1px),
-                radial-gradient(2.2px 2.2px at 88% 7%, var(--star-color-light) 1px, transparent 1px);
-            background-repeat: no-repeat;
-            background-size: 200px 200px, 250px 250px, 180px 180px, 300px 300px, 220px 220px, 280px 280px, 240px 240px, 200px 200px;
-            opacity: 0.7;
-            animation: starPulse 8s infinite alternate ease-in-out, starDrift 30s linear infinite;
+                radial-gradient(1px 1px at 20% 30%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 70% 85%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 45% 12%, var(--star-bright-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 90% 55%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 8% 92%, var(--star-bright-light) 1px, transparent 1px);
+            background-repeat: repeat;
+            background-size: 180px 180px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
         }
 
-        @keyframes starPulse {
-            0% { opacity: 0.4; background-size: 200px 200px, 250px 250px, 180px 180px, 300px 300px, 220px 220px, 280px 280px, 240px 240px, 200px 200px; }
-            100% { opacity: 1; background-size: 210px 210px, 260px 260px, 190px 190px, 310px 310px, 230px 230px, 290px 290px, 250px 250px, 210px 210px; }
+        .star-layer::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 15% 45%, rgba(100,140,200,0.2) 1px, transparent 1px),
+                radial-gradient(2px 2px at 62% 78%, var(--star-bright-light) 1.5px, transparent 1.5px);
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            opacity: 0.2;
+            transition: opacity 0.3s;
         }
 
-        @keyframes starDrift {
-            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-            100% { background-position: 20% 15%, 30% 5%, -10% 20%, 15% 25%, -5% 10%, 25% 30%, 10% 5%, 5% 20%; }
+        /* 深色模式下星星变得明亮密集 */
+        @media (prefers-color-scheme: dark) {
+            .star-layer::before {
+                background-image: 
+                    radial-gradient(1px 1px at 20% 30%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1.5px 1.5px at 70% 85%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1px 1px at 45% 12%, var(--star-bright-light) 1px, transparent 1px),
+                    radial-gradient(2px 2px at 90% 55%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1px 1px at 8% 92%, var(--star-bright-light) 1px, transparent 1px);
+                background-size: 180px 180px;
+                opacity: 0.9;
+                animation: starDrift1 80s linear infinite;
+            }
+            .star-layer::after {
+                background-image: 
+                    radial-gradient(2px 2px at 15% 45%, rgba(255,240,180,0.7) 1px, transparent 1px),
+                    radial-gradient(2.5px 2.5px at 62% 78%, var(--star-bright-light) 1.5px, transparent 1.5px),
+                    radial-gradient(1.8px 1.8px at 33% 22%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(3px 3px at 80% 38%, rgba(180,210,255,0.6) 1.5px, transparent 1.5px),
+                    radial-gradient(2px 2px at 48% 93%, var(--star-bright-light) 1px, transparent 1px),
+                    radial-gradient(1.2px 1.2px at 95% 17%, var(--star-base-light) 1px, transparent 1px);
+                background-size: 300px 300px;
+                opacity: 0.85;
+                animation: starDrift2 110s linear infinite reverse;
+            }
+            /* 第三层极细星尘 */
+            body::after {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+                background-image: radial-gradient(0.6px 0.6px at 30% 70%, rgba(210,230,255,0.4) 0.5px, transparent 0.5px);
+                background-repeat: repeat;
+                background-size: 80px 80px;
+                opacity: 0.6;
+                animation: starDrift3 60s linear infinite;
+            }
         }
 
-        /* 主容器相对星空层独立 */
+        @keyframes starDrift1 {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 180px 120px, 250px 80px, 130px 200px, 80px 160px, 200px 90px; }
+        }
+        @keyframes starDrift2 {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 250px 180px, 180px 250px, 300px 120px, 200px 280px, 150px 200px, 280px 150px; }
+        }
+        @keyframes starDrift3 {
+            0% { background-position: 0 0; }
+            100% { background-position: 120px 80px; }
+        }
+
+        /* 主容器 - 毛玻璃最顶层 */
         .console {
             max-width: 1300px;
             width: 100%;
             position: relative;
-            z-index: 2;
-            animation: consoleEntrance 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            z-index: 3;
+            animation: consoleFadeIn 0.7s ease-out;
         }
 
-        @keyframes consoleEntrance {
-            0% {
-                opacity: 0;
-                transform: translateY(18px) scale(0.98);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        @keyframes consoleFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 头部区域 */
+        /* 所有主要UI组件共用毛玻璃基底 + 大高斯模糊 */
+        .header-panel, .tab-container, .detail-card, .download-guide, .admin-tag, .contact-link, .copy-btn, .stat-item, .note, .intro-bubble {
+            backdrop-filter: blur(16px) saturate(200%);
+            -webkit-backdrop-filter: blur(16px) saturate(200%);
+            background: var(--card-glass-light);
+            border: 1px solid var(--glass-border-light);
+            box-shadow: var(--shadow-glass);
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        /* 头部面板 */
         .header-panel {
-            background: var(--card-bg-light);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 56px;
+            border-radius: 60px;
             padding: 1rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: var(--shadow-light);
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            transition: all 0.25s ease, transform 0.2s;
         }
         .header-panel:hover {
-            box-shadow: 0 14px 28px -8px rgba(0, 70, 150, 0.2);
             border-color: var(--accent-soft-light);
+            background: rgba(255,255,255,0.45);
             transform: translateY(-2px);
         }
 
-        .group-name-copy {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
         .group-name-copy h1 {
             font-size: 2.2rem;
             font-weight: 600;
-            color: var(--text-primary-light);
             letter-spacing: -0.3px;
             cursor: pointer;
-            transition: text-shadow 0.2s, transform 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
+            transition: text-shadow 0.2s;
         }
-        .group-name-copy h1:hover {
-            text-shadow: 0 0 6px var(--accent-primary-light);
-            transform: scale(1.01);
-        }
-
         .copy-btn {
-            background: var(--card-bg-solid-light);
-            border: 1px solid var(--border-light);
-            border-radius: 60px;
-            padding: 0.5rem 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary-light);
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.6, 1.1);
+            background: var(--card-glass-light);
+            border-radius: 50px;
+            padding: 0.5rem 1.6rem;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .copy-btn i {
-            color: var(--accent-primary-light);
-            transition: transform 0.2s;
+            cursor: pointer;
+            font-weight: 500;
         }
         .copy-btn:hover {
             background: var(--accent-soft-light);
             color: white;
-            border-color: var(--accent-soft-light);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 16px -8px rgba(0, 100, 200, 0.3);
+            transform: translateY(-2px);
         }
-        .copy-btn:hover i {
-            color: white;
-            transform: rotate(8deg);
-        }
-        .copy-btn:active {
-            transform: scale(0.96);
-            transition: 0.05s;
-        }
-
         .group-meta {
             display: flex;
             gap: 24px;
-            color: var(--text-secondary-light);
             font-weight: 500;
-            flex-wrap: wrap;
-        }
-        .group-meta span {
-            transition: all 0.2s;
-            cursor: default;
-            padding: 4px 0;
-        }
-        .group-meta span:hover {
-            color: var(--accent-primary-light);
-            transform: translateY(-1px);
-        }
-        .group-meta i {
-            color: var(--accent-primary-light);
-            width: 1.4rem;
-            transition: transform 0.2s;
-        }
-        .group-meta span:hover i {
-            transform: scale(1.1);
+            color: var(--text-secondary-light);
         }
 
-        /* 选项卡 */
+        /* 选项卡容器 */
         .tab-container {
-            background: var(--card-bg-light);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-light);
             border-radius: 48px;
-            padding: 2rem 2rem;
-            box-shadow: var(--shadow-light);
-            transition: box-shadow 0.25s;
-        }
-        .tab-container:hover {
-            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.25);
-        }
-
-        .tab-container input[type="radio"] {
-            display: none;
+            padding: 2rem;
+            background: var(--glass-bg-light);
+            backdrop-filter: blur(22px) saturate(220%);
+            border: 1px solid var(--glass-border-light);
         }
 
         .tab-nav {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.7rem;
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border-light);
-            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 0.7rem;
             flex-wrap: wrap;
         }
         .tab-nav label {
             padding: 0.7rem 2rem;
             border-radius: 80px;
-            background: transparent;
+            background: rgba(255,255,255,0.08);
             color: var(--text-secondary-light);
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1rem;
             cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(2px);
-        }
-        .tab-nav label i {
-            font-size: 1.2rem;
-            color: var(--accent-soft-light);
-            transition: transform 0.2s;
+            gap: 10px;
         }
         .tab-nav label:hover {
-            background: var(--hover-bg-light);
-            border-color: var(--border-light);
+            background: rgba(255,255,255,0.18);
             transform: translateY(-2px);
         }
         .tab-nav label:hover i {
@@ -283,17 +273,9 @@
         #tabInfo:checked ~ .tab-nav label[for="tabInfo"],
         #tabRules:checked ~ .tab-nav label[for="tabRules"],
         #tabResources:checked ~ .tab-nav label[for="tabResources"] {
-            background: var(--accent-primary-light);
+            background: var(--accent-light);
             color: white;
-            border-color: var(--accent-primary-light);
-            box-shadow: 0 6px 14px rgba(29, 110, 197, 0.3);
-            transform: scale(1.02);
-        }
-        #tabInfo:checked ~ .tab-nav label[for="tabInfo"] i,
-        #tabRules:checked ~ .tab-nav label[for="tabRules"] i,
-        #tabResources:checked ~ .tab-nav label[for="tabResources"] i {
-            color: white;
-            transform: scale(1.05);
+            box-shadow: 0 8px 18px rgba(30, 110, 200, 0.4);
         }
 
         .panels {
@@ -302,40 +284,24 @@
         }
         .panel {
             display: none;
-            will-change: transform, opacity;
+            animation: panelEntry 0.35s ease;
         }
         #tabInfo:checked ~ .panels .panel-info,
         #tabRules:checked ~ .panels .panel-rules,
         #tabResources:checked ~ .panels .panel-resources {
             display: block;
-            animation: panelGlide 0.4s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
+        }
+        @keyframes panelEntry {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes panelGlide {
-            0% {
-                opacity: 0;
-                transform: translateY(18px) scale(0.98);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* 卡片动效 */
+        /* 内层卡片 */
         .detail-card, .download-guide {
-            background: var(--card-bg-solid-light);
             border-radius: 32px;
             padding: 1.8rem 2rem;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.05);
-        }
-        .detail-card:hover, .download-guide:hover {
-            box-shadow: 0 20px 32px -12px rgba(0, 70, 150, 0.2);
-            background: var(--hover-bg-light);
-            transform: translateY(-5px) scale(1.01);
-            border-color: var(--accent-soft-light);
+            backdrop-filter: blur(16px);
+            background: var(--card-glass-light);
         }
         .card-title {
             display: flex;
@@ -343,18 +309,10 @@
             gap: 12px;
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--accent-primary-light);
-            border-left: 5px solid var(--accent-primary-light);
+            color: var(--accent-light);
+            border-left: 5px solid var(--accent-light);
             padding-left: 1rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s;
-        }
-        .detail-card:hover .card-title i {
-            transform: rotate(3deg) scale(1.05);
-        }
-        .card-title i {
-            font-size: 1.5rem;
-            transition: transform 0.2s;
+            margin-bottom: 1.2rem;
         }
 
         .grid-2 {
@@ -362,444 +320,360 @@
             grid-template-columns: 1.2fr 0.9fr;
             gap: 1.8rem;
         }
-        @media (max-width: 720px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .intro-bubble {
-            background: var(--card-bg-light);
-            padding: 1.3rem 1.8rem;
-            border-radius: 28px;
-            margin: 1rem 0;
-            border: 1px dashed var(--border-light);
-            transition: all 0.2s;
-        }
-        .intro-bubble:hover {
-            border: 1px solid var(--accent-soft-light);
-            transform: scale(1.01);
-            background: var(--hover-bg-light);
-        }
-
-        .stat-row {
+        /* 管理团队长条样式 + 图标旋转动画 */
+        .admin-grid {
             display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin: 1.2rem 0;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
-        .stat-item {
+        .admin-tag {
+            border-radius: 60px;
+            padding: 0.7rem 1.4rem;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: var(--card-bg-light);
-            padding: 0.5rem 1.2rem;
-            border-radius: 48px;
-            border: 1px solid var(--border-light);
+            gap: 15px;
             transition: all 0.2s;
+            cursor: default;
+            width: 100%;
+            backdrop-filter: blur(14px);
+            background: var(--card-glass-light);
         }
-        .stat-item:hover {
+        .admin-tag:hover {
             background: var(--accent-soft-light);
             color: white;
-            transform: translateY(-2px);
+            transform: translateX(6px) scale(1.01);
+            border-color: white;
         }
-        .stat-item:hover i {
+        .admin-tag i {
+            font-size: 2rem;
+            width: 2rem;
+            text-align: center;
+            color: var(--accent-soft-light);
+            transition: transform 0.2s ease;
+        }
+        .admin-tag:hover i {
             color: white;
+            transform: rotate(10deg) scale(1.08);
+        }
+        .avatar-circle {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e2a3a;
+            border: 2px solid var(--accent-light);
+            transition: 0.2s;
+        }
+        .admin-tag:hover .avatar-circle {
+            transform: scale(1.08);
+            border-color: #ffecb3;
+        }
+        .admin-tag span {
+            font-size: 1rem;
+            font-weight: 500;
+            flex: 1;
         }
 
+        .role-desc {
+            font-size: 0.7rem;
+            font-weight: normal;
+            background: rgba(0,0,0,0.2);
+            padding: 3px 10px;
+            border-radius: 40px;
+            margin-left: 12px;
+            display: inline-block;
+            color: var(--text-secondary-light);
+        }
         .badge {
             background: var(--accent-soft-light);
-            color: white;
             padding: 0.2rem 1rem;
             border-radius: 40px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            transition: box-shadow 0.2s;
         }
 
-        /* 群规列表 */
+        /* 群规样式 + 悬浮动画 */
         .rule-chapter {
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
         }
         .rule-chapter h4 {
             font-size: 1.2rem;
-            color: var(--accent-primary-light);
-            margin-bottom: 0.8rem;
+            color: var(--accent-light);
+            margin-bottom: 0.7rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s;
-        }
-        .rule-chapter:hover h4 i {
-            transform: rotate(5deg) scale(1.1);
         }
         .rule-chapter h4 i {
             transition: transform 0.2s;
+        }
+        .rule-chapter:hover h4 i {
+            transform: rotate(5deg) scale(1.1);
         }
         .rule-items {
             list-style: none;
         }
         .rule-items li {
-            margin-bottom: 0.55rem;
-            padding-left: 2rem;
+            margin-bottom: 0.5rem;
+            padding-left: 1.8rem;
             position: relative;
             color: var(--text-secondary-light);
-            transition: transform 0.1s, color 0.2s;
+            transition: transform 0.15s, color 0.2s;
         }
         .rule-items li:hover {
-            color: var(--accent-primary-light);
-            transform: translateX(5px);
+            color: var(--accent-light);
+            transform: translateX(6px);
         }
         .rule-items li i {
             position: absolute;
             left: 0;
             top: 0.2rem;
             color: var(--accent-soft-light);
-            width: 1.4rem;
-            font-size: 0.9rem;
             transition: transform 0.2s;
         }
         .rule-items li:hover i {
             transform: scale(1.2);
-            color: var(--accent-primary-light);
+            color: var(--accent-light);
         }
-
         .note {
-            background: var(--card-bg-light);
-            border-left: 4px solid var(--accent-primary-light);
-            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent-light);
+            padding: 0.8rem 1.2rem;
             border-radius: 20px;
-            margin: 1rem 0;
-            transition: all 0.2s;
+            margin: 0.8rem 0;
+            backdrop-filter: blur(8px);
         }
-        .note:hover {
-            background: var(--hover-bg-light);
-            transform: translateX(4px);
-        }
-
-        /* 管理员网格及头像 (圆形头像) */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 0.8rem;
-            margin: 1.2rem 0;
-        }
-        .admin-tag {
-            background: var(--card-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: 60px;
-            padding: 0.55rem 1rem 0.55rem 1.2rem;
-            display: flex;
+        .stat-item {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(2px);
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            cursor: default;
-            flex-wrap: nowrap;
-        }
-        .admin-tag:hover {
-            background: var(--accent-soft-light);
-            color: white;
-            border-color: var(--accent-soft-light);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 14px -8px rgba(50, 120, 200, 0.4);
-        }
-        .admin-tag:hover i {
-            color: white;
-            transform: rotate(8deg);
-        }
-        .admin-tag i {
-            color: var(--accent-soft-light);
-            width: 1.2rem;
-            transition: transform 0.2s;
-            font-size: 1.1rem;
-        }
-        /* 圆形头像样式，上下宽度与盾牌相同 (宽高1.2rem) */
-        .avatar-circle {
-            width: 1.2rem;
-            height: 1.2rem;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--bg-solid-light);
-            border: 1px solid var(--border-light);
-            vertical-align: middle;
-            margin: 0 2px 0 2px;
-            flex-shrink: 0;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .admin-tag:hover .avatar-circle {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 2px rgba(255,255,200,0.3);
-        }
-        .owner-tag i {
-            color: #f5b342;
-            filter: drop-shadow(0 0 3px rgba(245, 180, 66, 0.5));
-        }
-        .owner-tag:hover i {
-            animation: subtleRotate 0.3s ease;
-        }
-        @keyframes subtleRotate {
-            0% { transform: rotate(0deg);}
-            100% { transform: rotate(10deg);}
-        }
-
-        /* 小字职责描述 */
-        .role-desc {
-            font-size: 0.65rem;
-            font-weight: normal;
-            color: var(--role-desc-color);
-            margin-left: 10px;
-            letter-spacing: 0.2px;
-            background: var(--card-bg-light);
-            padding: 2px 8px;
-            border-radius: 40px;
-            display: inline-block;
-            vertical-align: middle;
-            transition: background 0.2s;
-        }
-        .badge + .role-desc {
-            margin-left: 8px;
-        }
-
-        .download-guide ol {
-            margin-left: 1.5rem;
-            color: var(--text-secondary-light);
-        }
-        .download-guide li {
-            margin-bottom: 0.6rem;
-            transition: transform 0.1s;
-        }
-        .download-guide li:hover {
-            transform: translateX(6px);
-            color: var(--accent-primary-light);
-        }
-        hr {
-            border: none;
-            height: 1px;
-            background: var(--border-light);
-            margin: 1.2rem 0;
-            transition: all 0.2s;
+            padding: 0.4rem 1.2rem;
+            border-radius: 48px;
+            backdrop-filter: blur(8px);
         }
         .footer-bar {
             margin-top: 2rem;
             display: flex;
             justify-content: space-between;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--glass-border-light);
+            padding-top: 1rem;
             color: var(--text-secondary-light);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-light);
-            padding-top: 1.2rem;
-            transition: all 0.2s;
         }
-        .footer-bar span {
-            transition: all 0.2s;
-        }
-        .footer-bar span:hover {
-            color: var(--accent-primary-light);
-            letter-spacing: 0.2px;
-        }
-
-        /* 复制浮动提示 */
-        .copy-feedback {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: var(--accent-primary-light);
-            color: white;
-            padding: 0.6rem 1.6rem;
-            border-radius: 60px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.2s, transform 0.2s;
-            pointer-events: none;
-            z-index: 200;
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);
-            backdrop-filter: blur(8px);
-            font-weight: 500;
-        }
-
+        /* 联系群主按钮 — 统一蓝色 */
         .contact-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--card-bg-light);
             padding: 0.5rem 1.3rem;
             border-radius: 60px;
-            border: 1px solid var(--border-light);
-            color: var(--text-primary-light);
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.2s ease;
+            backdrop-filter: blur(14px);
+            background: var(--card-glass-light);
+            color: var(--accent-light);
+            transition: all 0.2s;
         }
         .contact-link i {
-            color: var(--accent-primary-light);
+            color: var(--accent-light);
             transition: transform 0.2s;
         }
         .contact-link:hover {
-            background: var(--accent-soft-light);
+            background: var(--btn-blue);
             color: white;
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 18px rgba(0,80,150,0.3);
+            transform: translateY(-2px);
         }
         .contact-link:hover i {
             color: white;
             transform: rotate(-5deg) scale(1.1);
         }
+        hr {
+            border: none;
+            height: 1px;
+            background: var(--glass-border-light);
+            margin: 1rem 0;
+        }
+        .copy-feedback {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-light);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(16px);
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        /* 介绍区域的虚线边框与动画 */
+        .intro-bubble {
+            background: var(--card-glass-light);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 1.3rem 1.8rem;
+            margin: 1rem 0;
+            border: 1px dashed var(--glass-border-light);
+            transition: all 0.2s ease;
+        }
+        .intro-bubble:hover {
+            border: 1px solid var(--accent-soft-light);
+            transform: scale(1.01);
+            background: rgba(255,255,255,0.65);
+        }
+        @media (prefers-color-scheme: dark) {
+            .intro-bubble:hover {
+                background: rgba(40, 60, 90, 0.7);
+            }
+        }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            background: var(--bg-solid-light);
+            width: 6px;
+            background: rgba(0,0,0,0.1);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--accent-soft-light);
-            border-radius: 12px;
-        }
-        code {
-            background: var(--bg-solid-light);
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            font-family: monospace;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="console">
-        <!-- 头部 -->
-        <div class="header-panel">
-            <div class="group-name-copy">
-                <h1 id="groupNameDisplay">宇宙沙盘讨论群 | 主群 <i class="fas fa-globe-asia" style="font-size: 1.6rem;"></i></h1>
-                <button class="copy-btn" id="copyGroupBtn"><i class="fas fa-copy"></i> 复制群号</button>
-            </div>
-            <div class="group-meta">
-                <span><i class="fas fa-hashtag"></i> 594977633</span>
-                <span><i class="fas fa-user-group"></i> Top of 500 位成员</span>
-                <span><i class="fas fa-calendar-alt"></i> 建群时间：2022.1.24</span>
-            </div>
+<!-- 繁星专用层 -->
+<div class="star-layer"></div>
+
+<div class="console">
+    <!-- 头部 -->
+    <div class="header-panel">
+        <div class="group-name-copy">
+            <h1 id="groupNameDisplay">宇宙沙盘讨论群 | 主群 <i class="fas fa-globe-asia"></i></h1>
+            <button class="copy-btn" id="copyGroupBtn"><i class="fas fa-copy"></i> 复制群号</button>
         </div>
-
-        <!-- 选项卡区域 -->
-        <div class="tab-container">
-            <input type="radio" name="tab" id="tabInfo" checked>
-            <input type="radio" name="tab" id="tabRules">
-            <input type="radio" name="tab" id="tabResources">
-
-            <div class="tab-nav">
-                <label for="tabInfo"><i class="fas fa-info-circle"></i> 群·概况</label>
-                <label for="tabRules"><i class="fas fa-gavel"></i> 章程·群规</label>
-                <label for="tabResources"><i class="fas fa-download"></i> 资源与管理</label>
-            </div>
-
-            <div class="panels">
-                <!-- 面板1: 概况 -->
-                <div class="panel panel-info">
-                    <div class="grid-2">
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-satellite"></i> 群介绍</div>
-                            <div class="intro-bubble"><i class="fas fa-quote-right" style="margin-right: 8px;"></i> 本群为 <strong>宇宙沙盘 (Universe Sandbox)</strong> 的交流与资源分享群。当然，你也可以聊任何感兴趣的话题——只要不违反群规。这里聚集着模拟爱好者、天文迷与沙盘建造者。</div>
-                            <div class="stat-row"><span class="stat-item"><i class="fas fa-tag"></i> 游戏 · 宇宙沙盘 · 奥秘交流</span><span class="stat-item"><i class="fas fa-file-lines"></i> 群规版本 U2026.214-RC</span></div>
-                        </div>
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-chart-pie"></i> 快速档案</div>
-                            <ul class="rule-items" style="margin-bottom: 1rem;">
-                                <li><i class="fas fa-crown" style="color: #f5b342;"></i> 群主：RXC</li>
-                                <li><i class="fas fa-shield-alt"></i> 管理员：11 位 (见资源页)</li>
-                                <li><i class="fas fa-clock"></i> 创建时间：2022.1.24</li>
-                                <li><i class="fas fa-star"></i> Lv.30 可申请专属头衔</li>
-                            </ul>
-                            <div class="note"><i class="fas fa-lightbulb"></i> 除群规明确禁止的内容外，其他话题均可自由讨论。</div>
-                            <a href="https://qm.qq.com/cgi-bin/qm/qr?k=525599849" class="contact-link" target="_blank" style="margin-top: 0.8rem; display: inline-flex;"><i class="fab fa-qq"></i> 联系群主 (525599849)</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 面板2: 完整群规 -->
-                <div class="panel panel-rules">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.8rem;">
-                        <i class="fas fa-scroll" style="font-size: 2.2rem; color: var(--accent-primary-light);"></i>
-                        <h3 style="font-size: 1.8rem; font-weight: 600;">群规 · U2026.214-RC</h3>
-                    </div>
-                    <div class="rule-chapter"><h4><i class="fas fa-message"></i> 一、言论规范</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 1. 禁止发布侮辱、诽谤、辱骂、引战、挑衅及不适言论（包含性别歧视、实时政治等）。</li><li><i class="fas fa-circle"></i> 2. 禁止传播色情低俗内容；禁止非研究目的的性器官讨论。</li><li><i class="fas fa-circle"></i> 3. 严格禁止侮辱国家及革命先烈、恶搞严肃历史事件。</li><li><i class="fas fa-circle"></i> 4. 禁止未经许可刷屏扰乱秩序。</li></ul><div class="note">⚠️ 首次警告；第二次：1条禁言10分钟，2/3条禁言12小时；第三次起：1条禁言2小时，2/3条移出群，4条禁言10分钟。</div></div>
-                    <div class="rule-chapter"><h4><i class="fas fa-shield-halved"></i> 二、行为与安全</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 5. 下载资源后请勿立刻退群，否则可能拉黑；若因满员被清，欢迎重加。</li><li><i class="fas fa-circle"></i> 6. 严禁“开户”、挂人、开盒、曝光隐私、恶意造谣，违者立即移出并协助取证。</li><li><i class="fas fa-circle"></i> 7. 禁止广告/引流/推广，首次撤回，二次禁言12h，三次移出。</li><li><i class="fas fa-circle"></i> 8. 禁止传播病毒、盗号链接，永久移出。</li><li><i class="fas fa-circle"></i> 9. 禁止侵犯他人隐私/名誉/肖像，撤回/禁言/移出视情况。</li><li><i class="fas fa-circle"></i> 10. 任何违法行为直接移出系列群。</li></ul></div>
-                    <div class="rule-chapter"><h4><i class="fas fa-users"></i> 三、管理与秩序</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 11. 群等级Lv.30可获一次专属头衔，随时可申请修改。</li><li><i class="fas fa-circle"></i> 12. 恶意搅局者直接移出。</li><li><i class="fas fa-circle"></i> 13. 管理员违反群规内容一达6次撤职，内容二按相应处理。</li><li><i class="fas fa-circle"></i> 14. 管理员滥用职权视为一次违规。</li><li><i class="fas fa-circle"></i> 15. 除明确禁止外，其他话题自由讨论。</li><li><i class="fas fa-circle"></i> 16. 请勿将其他群矛盾带入，也请勿将本群矛盾外扩。</li></ul></div>
-                    <div class="rule-chapter"><h4><i class="fas fa-file-signature"></i> 四、附则</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 17. 禁止盗用本群规，仅限于RXC创建的宇宙沙盘系列交流群。</li></ul><div class="note" style="display: flex; justify-content: space-between; align-items: center;"><span><i class="fas fa-ban"></i> 严禁盗用群规 · 仅限于本系列群</span><span><i class="fas fa-code-branch"></i> 群规版本: U2026.214-RC</span></div></div>
-                </div>
-
-                <!-- 面板3: 资源与管理 (已添加圆形头像 + 职责小字) -->
-                <div class="panel panel-resources">
-                    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.8rem;">
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-user-astronaut"></i> 管理团队</div>
-                            <!-- 群主区域：增加职责小字 -->
-                            <div style="margin-bottom: 1rem;">
-                                <span class="badge" style="background: #c49b1f;">群主</span>
-                                <span class="role-desc"><i class="fas fa-chalkboard-user"></i> 全局决策 · 群规终审</span>
-                                <div class="admin-tag owner-tag" style="margin-top: 8px;">
-                                    <i class="fas fa-crown"></i>
-                                    <img class="avatar-circle" src="RXC.jpeg" alt="头像">
-                                    RXC
-                                </div>
-                            </div>
-                            <!-- 管理员区域：增加职责小字 -->
-                            <div>
-                                <span class="badge">管理员 (11人)</span>
-                                <span class="role-desc"><i class="fas fa-shield-halved"></i> 秩序维护 · 执行群规</span>
-                            </div>
-                            <div class="admin-grid">
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="CNTiancheng.jpeg" alt="头像"> CNTian Cheng</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="HD 38529 c.jpeg" alt="头像"> HD 38529 c</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="木可西金.jpeg" alt="头像"> 木可西金</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="无衣白常.jpeg" alt="头像"> 无衣白常</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="mOᴗoಣnesy.jpeg" alt="头像"> mOᴗoಣ nesy</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="若耶姆.jpeg" alt="头像"> 若耶姆</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="太空中的黑洞-白龙曰.jpeg" alt="头像"> 太空中的黑洞-白龙曰</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="星晖.jpeg" alt="头像"> 星晖</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="永恒的黑暗.jpeg" alt="头像"> 永恒的黑暗</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="云天明.jpeg" alt="头像"> 云天明</div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="中川ゆうき.jpeg" alt="头像"> 中川ゆうき</div>
-                            </div>
-                        </div>
-                        <div class="download-guide">
-                            <div class="card-title"><i class="fas fa-cloud-download-alt"></i> 资源下载引导</div>
-                            <ol><li>群文件（右上角“三矩形+菱形”）→ 宇宙沙盘文件夹 → U35版本。</li><li>下载压缩包，解压后运行 <code>Universe Sandbox x64.exe</code>。</li><li>本群不止宇宙沙盘，欢迎讨论任何不违规内容。</li></ol>
-                            <hr><div><i class="fas fa-exclamation-triangle" style="color: #e6a017;"></i> 请不要下载后立刻退群，否则可能被拉黑。若因满员被清，欢迎重加。</div><hr>
-                            <div><i class="fas fa-tags"></i> 群分类：游戏 · 宇宙沙盘 · 奥秘交流</div>
-                            <div style="margin-top: 1.2rem;"><a href="https://qm.qq.com/cgi-bin/qm/qr?k=525599849" class="contact-link" target="_blank"><i class="fab fa-qq"></i> 联系群主 (525599849)</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bar">
-                <span><i class="fas fa-copyright"></i> 宇宙沙盘讨论群 · 主群 594977633</span>
-                <span><i class="fas fa-envelope"></i> 如有疑问请联系管理员</span>
-            </div>
+        <div class="group-meta">
+            <span><i class="fas fa-hashtag"></i> 594977633</span>
+            <span><i class="fas fa-user-group"></i> Top of 500 位成员</span>
+            <span><i class="fas fa-calendar-alt"></i> 建群时间·2022.1.24</span>
         </div>
     </div>
-    <div id="copyFeedback" class="copy-feedback">✨ 群号已复制 ✨</div>
 
-    <script>
-        (function() {
-            const copyBtn = document.getElementById('copyGroupBtn');
-            const feedback = document.getElementById('copyFeedback');
-            const groupNumber = "594977633";
-            let timeoutId = null;
+    <!-- 选项卡主体 -->
+    <div class="tab-container">
+        <input type="radio" name="tab" id="tabInfo" checked>
+        <input type="radio" name="tab" id="tabRules">
+        <input type="radio" name="tab" id="tabResources">
+        <div class="tab-nav">
+            <label for="tabInfo"><i class="fas fa-info-circle"></i> 群·概况</label>
+            <label for="tabRules"><i class="fas fa-gavel"></i> 章程·群规</label>
+            <label for="tabResources"><i class="fas fa-download"></i> 资源与管理</label>
+        </div>
 
-            const showCopyFeedback = () => {
-                if (timeoutId) clearTimeout(timeoutId);
-                feedback.style.opacity = '1';
-                feedback.style.transform = 'scale(1.05)';
-                setTimeout(() => { feedback.style.transform = 'scale(1)'; }, 100);
-                timeoutId = setTimeout(() => {
-                    feedback.style.opacity = '0';
-                }, 1500);
-            };
+        <div class="panels">
+            <!-- 概况面板 -->
+            <div class="panel panel-info">
+                <div class="grid-2">
+                    <div class="detail-card">
+                        <div class="card-title"><i class="fas fa-satellite"></i> 群介绍</div>
+                        <div class="intro-bubble">
+                            <i class="fas fa-quote-right" style="margin-right: 8px;"></i> 
+                            本群为 <strong>宇宙沙盘 (Universe Sandbox)</strong> 的交流与资源分享群。当然，你也可以聊任何感兴趣的话题——只要不违反群规。这里聚集着模拟爱好者、天文迷与沙盘建造者。
+                        </div>
+                        <div class="stat-row"><span class="stat-item"><i class="fas fa-tag"></i> 游戏 · 宇宙沙盘 · 奥秘交流</span><span class="stat-item"><i class="fas fa-file-lines"></i> 群规版本 U2026.214-RC</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="card-title"><i class="fas fa-chart-pie"></i> 快速档案</div>
+                        <ul class="rule-items" style="margin-bottom: 1rem;">
+                            <li><i class="fas fa-crown" style="color: #f5b342;"></i> 群主：RXC</li>
+                            <li><i class="fas fa-shield-alt"></i> 管理员：11 位 (资源页)</li>
+                            <li><i class="fas fa-clock"></i> 创建时间：2022.1.24</li>
+                            <li><i class="fas fa-star"></i> Lv.30 专属头衔</li>
+                        </ul>
+                        <div class="note"><i class="fas fa-lightbulb"></i> 除群规明确禁止外，自由讨论。</div>
+                        <a href="https://qm.qq.com/cgi-bin/qm/qr?k=525599849" class="contact-link" target="_blank"><i class="fab fa-qq"></i> 联系群主 (525599849)</a>
+                    </div>
+                </div>
+            </div>
 
-            copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(groupNumber).then(showCopyFeedback).catch(() => alert('手动复制: ' + groupNumber));
-            });
+            <!-- 群规面板 -->
+            <div class="panel panel-rules">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;">
+                    <i class="fas fa-scroll" style="font-size: 2rem; color: var(--accent-light);"></i>
+                    <h3 style="font-size: 1.8rem; font-weight: 600;">群规 · U2026.214-RC</h3>
+                </div>
+                <div class="rule-chapter"><h4><i class="fas fa-message"></i> 一、言论规范</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 1. 禁止侮辱、诽谤、辱骂、引战、挑衅及不适言论（包含性别歧视、实时政治等）。</li><li><i class="fas fa-circle"></i> 2. 禁止传播色情低俗内容；禁止非研究目的的性器官讨论。</li><li><i class="fas fa-circle"></i> 3. 严格禁止侮辱国家及革命先烈、恶搞严肃历史事件。</li><li><i class="fas fa-circle"></i> 4. 禁止未经许可刷屏扰乱秩序。</li></ul><div class="note">⚠️ 首次警告；第二次：1条禁言10分钟，2/3条禁言12小时；第三次起：1条禁言2小时，2/3条移出群，4条禁言10分钟。</div></div>
+                <div class="rule-chapter"><h4><i class="fas fa-shield-halved"></i> 二、行为与安全</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 5. 下载资源后请勿立刻退群，否则可能拉黑；若因满员被清，欢迎重加。</li><li><i class="fas fa-circle"></i> 6. 严禁“开户”、挂人、开盒、曝光隐私、恶意造谣，违者立即移出并协助取证。</li><li><i class="fas fa-circle"></i> 7. 禁止广告/引流/推广，首次撤回，二次禁言12h，三次移出。</li><li><i class="fas fa-circle"></i> 8. 禁止传播病毒、盗号链接，永久移出。</li><li><i class="fas fa-circle"></i> 9. 禁止侵犯他人隐私/名誉/肖像，撤回/禁言/移出视情况。</li><li><i class="fas fa-circle"></i> 10. 任何违法行为直接移出系列群。</li></ul></div>
+                <div class="rule-chapter"><h4><i class="fas fa-users"></i> 三、管理与秩序</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 11. 群等级Lv.30可获一次专属头衔，随时可申请修改。</li><li><i class="fas fa-circle"></i> 12. 恶意搅局者直接移出。</li><li><i class="fas fa-circle"></i> 13. 管理员违反群规内容一达6次撤职，内容二按相应处理。</li><li><i class="fas fa-circle"></i> 14. 管理员滥用职权视为一次违规。</li><li><i class="fas fa-circle"></i> 15. 除明确禁止外，其他话题自由讨论。</li><li><i class="fas fa-circle"></i> 16. 请勿将其他群矛盾带入，也请勿将本群矛盾外扩。</li></ul></div>
+                <div class="rule-chapter"><h4><i class="fas fa-file-signature"></i> 四、附则</h4><ul class="rule-items"><li><i class="fas fa-circle"></i> 17. 禁止盗用本群规，仅限于RXC创建的宇宙沙盘系列交流群。</li></ul><div class="note"><span><i class="fas fa-ban"></i> 严禁盗用 · 仅限于本系列群</span> <span><i class="fas fa-code-branch"></i> 版本: U2026.214-RC</span></div></div>
+            </div>
 
-            document.getElementById('groupNameDisplay').addEventListener('click', () => {
-                navigator.clipboard.writeText(groupNumber).then(showCopyFeedback).catch(() => alert('手动复制: ' + groupNumber));
-            });
-        })();
-    </script>
+            <!-- 资源与管理 (长条样式，头像图标统一大尺寸) -->
+            <div class="panel panel-resources">
+                <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.8rem;">
+                    <div class="detail-card">
+                        <div class="card-title"><i class="fas fa-user-astronaut"></i> 管理团队</div>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge" style="background: #c49b1f;">群主</span>
+                            <span class="role-desc"><i class="fas fa-crown"></i> 全局决策·终审</span>
+                            <div class="admin-tag owner-tag" style="margin-top: 12px;">
+                                <i class="fas fa-crown"></i>
+                                <img class="avatar-circle" src="RXC.jpeg" alt="头像">
+                                <span>RXC</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge">管理员 (11人)</span>
+                            <span class="role-desc"><i class="fas fa-shield-halved"></i> 秩序维护·执行群规</span>
+                        </div>
+                        <div class="admin-grid">
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="CNTiancheng.jpeg" alt="头像"><span>CNTian Cheng</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="HD 38529 c.jpeg" alt="头像"><span>HD 38529 c</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="木可西金.jpeg" alt="头像"><span>木可西金</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="无衣白常.jpeg" alt="头像"><span>无衣白常</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="mOᴗoಣnesy.jpeg" alt="头像"><span>mOᴗoಣ nesy</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="若耶姆.jpeg" alt="头像"><span>若耶姆</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="太空中的黑洞-白龙曰.jpeg" alt="头像"><span>太空中的黑洞-白龙曰</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="星晖.jpeg" alt="头像"><span>星晖</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="永恒的黑暗.jpeg" alt="头像"><span>永恒的黑暗</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="云天明.jpeg" alt="头像"><span>云天明</span></div>
+                            <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="中川ゆうき.jpeg" alt="头像"><span>中川ゆうき</span></div>
+                        </div>
+                    </div>
+                    <div class="download-guide">
+                        <div class="card-title"><i class="fas fa-cloud-download-alt"></i> 资源下载引导</div>
+                        <ol><li>群文件（右上角“三矩形+菱形”）→ 宇宙沙盘文件夹 → U35版本。</li><li>下载压缩包，解压后运行 <code>Universe Sandbox x64.exe</code>。</li><li>本群不止宇宙沙盘，欢迎讨论任何不违规内容。</li></ol>
+                        <hr><div><i class="fas fa-exclamation-triangle" style="color: #f4b942;"></i> 请不要下载后立刻退群，否则可能被拉黑。若因满员被清，欢迎重加。</div><hr>
+                        <div><i class="fas fa-tags"></i> 群分类：游戏 · 宇宙沙盘 · 奥秘交流</div>
+                        <div style="margin-top: 1rem;"><a href="https://qm.qq.com/cgi-bin/qm/qr?k=525599849" class="contact-link" target="_blank"><i class="fab fa-qq"></i> 联系群主 (525599849)</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bar">
+            <span><i class="fas fa-copyright"></i> 宇宙沙盘讨论群 · 主群 594977633</span>
+            <span><i class="fas fa-envelope"></i> 如有疑问请联系管理员</span>
+        </div>
+    </div>
+</div>
+<div id="copyFeedback" class="copy-feedback">✨ 群号已复制 ✨</div>
+
+<script>
+    (function() {
+        const copyBtn = document.getElementById('copyGroupBtn');
+        const feedback = document.getElementById('copyFeedback');
+        const groupNumber = "594977633";
+        let timer = null;
+        const show = () => {
+            if (timer) clearTimeout(timer);
+            feedback.style.opacity = '1';
+            feedback.style.transform = 'scale(1.05)';
+            setTimeout(() => feedback.style.transform = 'scale(1)', 100);
+            timer = setTimeout(() => feedback.style.opacity = '0', 1500);
+        };
+        copyBtn.addEventListener('click', () => navigator.clipboard.writeText(groupNumber).then(show).catch(() => alert('手动复制: ' + groupNumber)));
+        document.getElementById('groupNameDisplay').addEventListener('click', () => navigator.clipboard.writeText(groupNumber).then(show).catch(() => alert('手动复制: ' + groupNumber)));
+    })();
+</script>
 </body>
 </html>
