@@ -148,28 +148,16 @@
         }
 
         @keyframes starDrift1 {
-            0% {
-                background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
-            }
-            100% {
-                background-position: 180px 120px, 250px 80px, 130px 200px, 80px 160px, 200px 90px;
-            }
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 180px 120px, 250px 80px, 130px 200px, 80px 160px, 200px 90px; }
         }
         @keyframes starDrift2 {
-            0% {
-                background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
-            }
-            100% {
-                background-position: 250px 180px, 180px 250px, 300px 120px, 200px 280px, 150px 200px, 280px 150px;
-            }
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 250px 180px, 180px 250px, 300px 120px, 200px 280px, 150px 200px, 280px 150px; }
         }
         @keyframes starDrift3 {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 120px 80px;
-            }
+            0% { background-position: 0 0; }
+            100% { background-position: 120px 80px; }
         }
 
         /* 主容器 */
@@ -182,14 +170,8 @@
         }
 
         @keyframes consoleFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* 大卡片 - 毛玻璃效果 */
@@ -567,57 +549,12 @@
             <div class="archive-card-header">
                 <i class="fas fa-box-archive archive-icon"></i>
                 <h2>群历史档案库</h2>
-                <span class="badge-count">📋 共 3 份档案</span>
+                <span class="badge-count" id="archiveCount">📋 共 0 份档案</span>
             </div>
 
             <!-- 档案条目列表 -->
-            <div class="archive-entries">
-                <!-- 第一个：我们群的第一个群规 -->
-                <a href="Archive\Archive202202-1\Archive202202-1.html" class="archive-entry-btn" title="点击查看：我们群的第一个群规">
-                    <div class="entry-icon-circle">
-                        <i class="fas fa-scroll"></i>
-                    </div>
-                    <div class="entry-info">
-                        <span class="entry-title">我们群的第一个群规</span>
-                        <div class="entry-meta">
-                            <span class="meta-date"><i class="fas fa-calendar-check"></i> 2022.2</span>
-                            <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: 星星SUR</span>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right entry-arrow"></i>
-                </a>
-
-                <!-- 第二个：U2025.729-RC群规 -->
-                <a href="Archive\Archive202507-1\Archive202507-1.html" class="archive-entry-btn" title="点击查看：U2025.729-RC 群规">
-                    <div class="entry-icon-circle">
-                        <i class="fas fa-gavel"></i>
-                    </div>
-                    <div class="entry-info">
-                        <span class="entry-title">U2025.729-RC 群规</span>
-                        <div class="entry-meta">
-                            <span class="meta-date"><i class="fas fa-calendar-check"></i> 2025.7.29</span>
-                            <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: 星星RXC</span>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right entry-arrow"></i>
-                </a>
-
-                <!-- 第三个：2025-2026 跨年截图 -->
-                <a href="Archive\Archive202601-1\Archive202601-1.html" class="archive-entry-btn" title="点击查看：2025-2026 跨年截图">
-                    <div class="entry-icon-circle">
-                        <i class="fas fa-camera-retro"></i>
-                    </div>
-                    <div class="entry-info">
-                        <span class="entry-title">2025-2026 跨年截图</span>
-                        <div class="entry-meta">
-                            <span class="meta-date"><i class="fas fa-calendar-check"></i>2026.2.26</span>
-                            <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: 诸位群成员</span>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right entry-arrow"></i>
-                </a>
-
-                <!-- 占位条目 - 未来档案 -->
+            <div class="archive-entries" id="archiveList">
+                <!-- 占位条目 - 未来档案 (始终保留) -->
                 <div class="placeholder-entry">
                     <i class="fas fa-hourglass-half"></i>
                     <span>更多历史档案等待归档...</span>
@@ -632,5 +569,53 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function() {
+            const countSpan = document.getElementById('archiveCount');
+            const listContainer = document.getElementById('archiveList');
+
+            // 加载 archives.json 文件
+            fetch('archives.json')
+                .then(response => {
+                    if (!response.ok) throw new Error('无法加载档案列表');
+                    return response.json();
+                })
+                .then(archives => {
+                    // 更新档案数量
+                    countSpan.textContent = `📋 共 ${archives.length} 份档案`;
+
+                    // 创建条目并插入到占位符之前
+                    archives.forEach(archive => {
+                        const link = document.createElement('a');
+                        link.href = archive.link;
+                        link.className = 'archive-entry-btn';
+                        link.title = `点击查看：${archive.title}`;
+
+                        link.innerHTML = `
+                            <div class="entry-icon-circle">
+                                <i class="fas ${archive.icon}"></i>
+                            </div>
+                            <div class="entry-info">
+                                <span class="entry-title">${archive.title}</span>
+                                <div class="entry-meta">
+                                    <span class="meta-date"><i class="fas fa-calendar-check"></i> ${archive.date}</span>
+                                    <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: ${archive.author}</span>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right entry-arrow"></i>
+                        `;
+
+                        // 插入到占位符之前
+                        const placeholder = listContainer.querySelector('.placeholder-entry');
+                        listContainer.insertBefore(link, placeholder);
+                    });
+                })
+                .catch(error => {
+                    console.error('加载档案失败:', error);
+                    countSpan.textContent = '📋 加载失败';
+                });
+        })();
+    </script>
 </body>
 </html>
