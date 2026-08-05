@@ -593,6 +593,64 @@
             background: var(--accent-soft-light);
             border-radius: 10px;
         }
+
+        /* ========== 🌌 深色模式毛玻璃终极强化：强制透明 + 星空可见 + 文字明亮 ========== */
+        @media (prefers-color-scheme: dark) {
+            /* 所有卡片背景改为极低不透明度，星空清晰穿透 */
+            .header-panel,
+            .detail-card,
+            .download-guide,
+            .intro-bubble,
+            .note,
+            .stat-item,
+            .admin-tag,
+            .copy-btn,
+            .contact-link {
+                background: rgba(15, 22, 34, 0.22) !important;
+                backdrop-filter: blur(26px) saturate(180%);
+                -webkit-backdrop-filter: blur(26px) saturate(180%);
+            }
+
+            /* tab容器也保持极致通透 */
+            .tab-container {
+                background: rgba(8, 14, 24, 0.28) !important;
+                backdrop-filter: blur(30px) saturate(200%);
+                -webkit-backdrop-filter: blur(30px) saturate(200%);
+            }
+
+            /* 标签按钮背景微调 */
+            .tab-nav label {
+                background: rgba(20, 28, 40, 0.25) !important;
+            }
+
+            /* hover 状态保持一定反馈，但绝不能变实体 */
+            .header-panel:hover {
+                background: rgba(35, 55, 80, 0.38) !important;
+            }
+            .intro-bubble:hover {
+                background: rgba(35, 55, 80, 0.35) !important;
+            }
+            .admin-tag:hover {
+                background: var(--accent-soft-light) !important;
+                color: white;
+            }
+            .contact-link:hover {
+                background: var(--btn-blue) !important;
+                color: white;
+            }
+            .copy-btn:hover {
+                background: var(--accent-soft-light) !important;
+                color: white;
+            }
+
+            /* 确保复制按钮文字明亮 */
+            .copy-btn {
+                color: #f0f3f8 !important;
+            }
+            .copy-btn i {
+                color: #f0f3f8;
+            }
+        }
     </style>
 </head>
 <body>
