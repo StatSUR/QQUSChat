@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宇宙沙盘讨论群 · 官方信息台</title>
+    <!-- Font Awesome 6 (免费图标库，专业线条风格，无 emoji) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== CSS 变量 - 跟随系统浅色/深色模式 ===== */
+        :root {
+            --bg-gradient-light: radial-gradient(circle at 10% 20%, #f0f4fa, #d9e2ef);
+            --bg-solid-light: #eef2f6;
+            --card-bg-light: rgba(255, 255, 255, 0.85);
+            --card-bg-solid-light: #ffffff;
+            --text-light: #1e2b3f;
+            --text-soft-light: #2c3e5a;
+            --border-light: rgba(0, 20, 40, 0.12);
+            --accent-light: #1a5c9e;
+            --accent-soft-light: #3b7fc9;
+            --shadow-light: 0 15px 30px -12px rgba(0, 20, 40, 0.25);
+            --header-line-light: #a0c1d9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-gradient-light: radial-gradient(circle at 10% 20%, #141f2c, #0a121c);
+                --bg-solid-light: #0e1622;
+                --card-bg-light: rgba(20, 30, 45, 0.9);
+                --card-bg-solid-light: #1e2a3a;
+                --text-light: #e3ecf5;
+                --text-soft-light: #b6c9e0;
+                --border-light: rgba(80, 120, 180, 0.2);
+                --accent-light: #5f9eff;
+                --accent-soft-light: #4080d0;
+                --shadow-light: 0 20px 35px -10px #00000060;
+                --header-line-light: #2f5575;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient-light);
+            color: var(--text-light);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            transition: background-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 主容器 — 更偏向官方/控制台风格 */
+        .official-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 顶部标识 */
+        .identity-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--card-bg-light);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            border-radius: 60px;
+            box-shadow: var(--shadow-light);
+            font-weight: 500;
+        }
+
+        .group-number {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .group-number i {
+            color: var(--accent-light);
+            width: 1.8rem;
+            font-size: 1.3rem;
+        }
+        .group-number span {
+            background: var(--accent-soft-light);
+            color: white;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+
+        .group-creation {
+            display: flex;
+            gap: 20px;
+            color: var(--text-soft-light);
+        }
+
+        /* ===== 选项卡 (radio 分页) ===== */
+        .tab-section {
+            background: var(--card-bg-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: 42px;
+            padding: 2rem 2.2rem;
+            box-shadow: var(--shadow-light);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        /* 隐藏radio */
+        .tab-section input[type="radio"] {
+            display: none;
+        }
+
+        .tab-labels {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2.2rem;
+            border-bottom: 1px solid var(--header-line-light);
+            padding-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-labels label {
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-soft-light);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-labels label i {
+            font-size: 1.1rem;
+            color: var(--accent-soft-light);
+        }
+
+        /* 选中效果 */
+        #tab1:checked ~ .tab-labels label[for="tab1"],
+        #tab2:checked ~ .tab-labels label[for="tab2"],
+        #tab3:checked ~ .tab-labels label[for="tab3"] {
+            background: var(--accent-light);
+            color: white;
+            border-color: var(--accent-light);
+        }
+        #tab1:checked ~ .tab-labels label[for="tab1"] i,
+        #tab2:checked ~ .tab-labels label[for="tab2"] i,
+        #tab3:checked ~ .tab-labels label[for="tab3"] i {
+            color: white;
+        }
+
+        /* 面板容器 */
+        .panels {
+            position: relative;
+            min-height: 380px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeSlide 0.25s ease;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0.4; transform: translateY(5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        #tab1:checked ~ .panels .panel-1,
+        #tab2:checked ~ .panels .panel-2,
+        #tab3:checked ~ .panels .panel-3 {
+            display: block;
+        }
+
+        /* ===== 面板内通用卡片/排版 ===== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--card-bg-solid-light);
+            border-radius: 28px;
+            padding: 1.6rem 2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .stat-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--accent-light);
+            border-left: 5px solid var(--accent-light);
+            padding-left: 1rem;
+        }
+        .stat-title i {
+            font-size: 1.4rem;
+        }
+
+        .intro-text {
+            background: var(--card-bg-light);
+            padding: 1.2rem 1.5rem;
+            border-radius: 20px;
+            margin: 1rem 0;
+            border: 1px dashed var(--border-light);
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            background: var(--accent-soft-light);
+            color: white;
+            padding: 0.15rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .rule-block {
+            margin-bottom: 2rem;
+        }
+
+        .rule-block h4 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rule-list {
+            list-style: none;
+        }
+        .rule-list li {
+            margin-bottom: 0.65rem;
+            padding-left: 1.8rem;
+            position: relative;
+            color: var(--text-soft-light);
+        }
+        .rule-list li i {
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            color: var(--accent-soft-light);
+            font-size: 0.9rem;
+            width: 1.3rem;
+        }
+
+        .rule-note {
+            background: var(--card-bg-solid-light);
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent-light);
+        }
+
+        /* 管理员网格 */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+        .admin-item {
+            background: var(--card-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.5rem 1rem 0.5rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(4px);
+            color: var(--text-light);
+        }
+        .admin-item i {
+            color: var(--accent-soft-light);
+            width: 1.4rem;
+        }
+        .owner-highlight i {
+            color: #f5b342;
+        }
+
+        .download-steps {
+            background: var(--card-bg-solid-light);
+            border-radius: 28px;
+            padding: 1.6rem 2rem;
+        }
+        .download-steps ol {
+            margin-left: 1.5rem;
+            color: var(--text-soft-light);
+        }
+        .download-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: var(--border-light);
+            margin: 1.5rem 0;
+        }
+
+        .footer-note {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            color: var(--text-soft-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.2rem;
+        }
+
+        /* 图标统一调整 */
+        i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="official-container">
+    <!-- 顶部标识条：群号 + 创建日期 + 人数（无emoji） -->
+    <div class="identity-bar">
+        <div class="group-number">
+            <i class="fa-regular fa-hashtag"></i>
+            <span>594977633</span>
+            <i class="fa-regular fa-user-group" style="margin-left: 10px;"></i>
+            <span>477 位成员</span>
+        </div>
+        <div class="group-creation">
+            <i class="fa-regular fa-calendar"></i> 创建于 2022.1.24
+            <i class="fa-regular fa-message" style="margin-left: 12px;"></i> 游戏 · 宇宙沙盘
+        </div>
+    </div>
+
+    <!-- 选项卡区域（纯CSS分页） -->
+    <div class="tab-section">
+        <!-- 隐藏radio -->
+        <input type="radio" name="tab" id="tab1" checked>
+        <input type="radio" name="tab" id="tab2">
+        <input type="radio" name="tab" id="tab3">
+
+        <!-- 标签栏 (使用专业图标，无emoji) -->
+        <div class="tab-labels">
+            <label for="tab1"><i class="fa-regular fa-satellite-dish"></i> 群·概况</label>
+            <label for="tab2"><i class="fa-regular fa-file-lines"></i> 章程·群规</label>
+            <label for="tab3"><i class="fa-regular fa-cubes"></i> 资源与管理</label>
+        </div>
+
+        <!-- 所有面板 -->
+        <div class="panels">
+            <!-- 面板1：概况 (介绍、创建信息、简要) -->
+            <div class="panel panel-1">
+                <div class="info-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">
+                            <i class="fa-regular fa-meteor"></i> 群介绍
+                        </div>
+                        <div class="intro-text">
+                            <i class="fa-regular fa-quote-right" style="margin-right: 8px;"></i> 
+                            本群为 <strong>宇宙沙盘 (Universe Sandbox)</strong> 的交流与资源分享群。当然，你也可以聊任何感兴趣的话题——只要不违反群规。🌌 这里聚集着模拟爱好者、天文迷与沙盘建造者。
+                        </div>
+                        <div style="margin: 1.5rem 0 0.5rem; display: flex; flex-wrap: wrap; gap: 16px;">
+                            <span><i class="fa-regular fa-tag"></i> 群分类: 游戏 · 模拟 · 宇宙</span>
+                            <span><i class="fa-regular fa-pen-to-square"></i> 建议备注: 昵称-擅长领域</span>
+                        </div>
+                        <div style="background: var(--card-bg-light); padding: 0.8rem; border-radius: 18px; margin-top: 0.8rem;">
+                            <i class="fa-regular fa-image" style="margin-right: 8px;"></i> 群公告配图: 本群的群规 (2026.2.14) 
+                            <span class="meta-tag" style="margin-left: 10px;">U2026.214-RC</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">
+                            <i class="fa-regular fa-flag"></i> 快速参考
+                        </div>
+                        <ul class="rule-list" style="margin-bottom: 1rem;">
+                            <li><i class="fa-regular fa-circle-check"></i> 群主: RXC</li>
+                            <li><i class="fa-regular fa-circle-check"></i> 管理员: 13 位 (见资源页)</li>
+                            <li><i class="fa-regular fa-circle-check"></i> 群规最后修订: 2026.2.14</li>
+                            <li><i class="fa-regular fa-circle-check"></i> 游戏资源: 群文件 → U35</li>
+                        </ul>
+                        <div class="rule-note" style="margin-top: 0;">
+                            <i class="fa-regular fa-lightbulb"></i>  Lv.30 可申请专属头衔，详情见群规第三章。
+                        </div>
+                    </div>
+                </div>
+                <!-- 补充说明 -->
+                <div style="margin-top: 1.5rem; background: var(--card-bg-solid-light); border-radius: 24px; padding: 1rem 1.8rem;">
+                    <i class="fa-regular fa-message" style="margin-right: 10px;"></i> 
+                    本群为交流和资源分享而建，除群规明确禁止内容外，欢迎一切聊天。群文件提供宇宙沙盘U35版本。
+                </div>
+            </div>
+
+            <!-- 面板2：完整群规 (详细条款，无emoji，只用图标) -->
+            <div class="panel panel-2">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.8rem;">
+                    <i class="fa-regular fa-scale-balanced" style="font-size: 2rem; color: var(--accent-light);"></i>
+                    <h3 style="font-weight: 600; font-size: 1.6rem;">群规 · U2026.214-RC</h3>
+                </div>
+
+                <!-- 一、言论规范 -->
+                <div class="rule-block">
+                    <h4><i class="fa-regular fa-message"></i> 一、言论规范</h4>
+                    <ul class="rule-list">
+                        <li><i class="fa-regular fa-circle"></i> 1. 禁止发布侮辱、诽谤、辱骂、引战、挑衅及不适言论（包含性别歧视、实时政治等）。</li>
+                        <li><i class="fa-regular fa-circle"></i> 2. 禁止传播色情低俗内容（文字/图片/链接）；禁止非研究目的的性器官讨论。</li>
+                        <li><i class="fa-regular fa-circle"></i> 3. 严格禁止侮辱国家及革命先烈、恶搞严肃历史事件。</li>
+                        <li><i class="fa-regular fa-circle"></i> 4. 禁止未经许可刷屏扰乱秩序。</li>
+                    </ul>
+                    <div class="rule-note">
+                        ⚠️ 首次警告；第二次：1条禁言10分钟，2/3条禁言12小时；第三次起：1条禁言2小时，2/3条移出群，4条禁言10分钟。
+                    </div>
+                </div>
+
+                <!-- 二、行为与安全 -->
+                <div class="rule-block">
+                    <h4><i class="fa-regular fa-shield"></i> 二、行为与安全</h4>
+                    <ul class="rule-list">
+                        <li><i class="fa-regular fa-circle"></i> 5. 下载资源后请勿立刻退群，否则可能拉黑；若因满员被清，欢迎重加。</li>
+                        <li><i class="fa-regular fa-circle"></i> 6. 严禁“开户”、挂人、开盒、曝光隐私、恶意造谣，违者立即移出并协助取证。</li>
+                        <li><i class="fa-regular fa-circle"></i> 7. 禁止广告/引流/推广，首次撤回，二次禁言12h，三次移出。</li>
+                        <li><i class="fa-regular fa-circle"></i> 8. 禁止传播病毒、盗号链接，永久移出。</li>
+                        <li><i class="fa-regular fa-circle"></i> 9. 禁止侵犯他人隐私/名誉/肖像，撤回/禁言/移出视情况。</li>
+                        <li><i class="fa-regular fa-circle"></i> 10. 任何违法行为直接移出系列群。</li>
+                    </ul>
+                </div>
+
+                <!-- 三、管理与秩序 -->
+                <div class="rule-block">
+                    <h4><i class="fa-regular fa-users"></i> 三、管理与秩序</h4>
+                    <ul class="rule-list">
+                        <li><i class="fa-regular fa-circle"></i> 11. 群等级Lv.30可获一次专属头衔，随时可申请修改。</li>
+                        <li><i class="fa-regular fa-circle"></i> 12. 恶意搅局者直接移出。</li>
+                        <li><i class="fa-regular fa-circle"></i> 13. 管理员违反群规内容一达6次撤职，内容二按相应处理。</li>
+                        <li><i class="fa-regular fa-circle"></i> 14. 管理员滥用职权视为一次违规。</li>
+                        <li><i class="fa-regular fa-circle"></i> 15. 除明确禁止外，其他话题自由讨论。</li>
+                        <li><i class="fa-regular fa-circle"></i> 16. 请勿将其他群矛盾带入，也请勿将本群矛盾外扩。</li>
+                    </ul>
+                </div>
+
+                <!-- 四、附则 -->
+                <div class="rule-block">
+                    <h4><i class="fa-regular fa-file-signature"></i> 四、附则</h4>
+                    <ul class="rule-list">
+                        <li><i class="fa-regular fa-circle"></i> 17. 禁止盗用本群规，仅限于RXC创建的宇宙沙盘系列交流群。</li>
+                    </ul>
+                    <div class="rule-note">
+                        <i class="fa-regular fa-heart"></i> 群规初衷：维护秩序、保护权益，非干预正常互动。轻微问题提醒为主。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 面板3：资源与管理 (管理员名单 + 下载引导 + 备注) -->
+            <div class="panel panel-3">
+                <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.8rem;">
+                    <!-- 左边：管理员团队 -->
+                    <div class="stat-card" style="padding: 1.5rem;">
+                        <div class="stat-title">
+                            <i class="fa-regular fa-user-astronaut"></i> 管理团队
+                        </div>
+                        <div style="margin-bottom: 0.8rem;">
+                            <span class="meta-tag" style="background: #d4a11e;">群主</span>
+                            <div class="admin-item owner-highlight" style="margin-top: 8px;">
+                                <i class="fa-regular fa-crown"></i> RXC
+                            </div>
+                        </div>
+                        <div><span class="meta-tag">管理员</span> (13人)</div>
+                        <div class="admin-grid">
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> CNTianCheng</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> HD 38529 c</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> Moood</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 无衣白常</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 其斤大木木</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 若耶姆</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 太空中的黑洞-白龙曰</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 鑫</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 星晖</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 永恒的黑暗</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 云天明</div>
+                            <div class="admin-item"><i class="fa-regular fa-shield"></i> 中川ゆうき</div>
+                            <!-- 注：名单完整 -->
+                        </div>
+                        <div style="margin-top: 0.8rem;"><i class="fa-regular fa-clock"></i> 若有变动以实际为准</div>
+                    </div>
+
+                    <!-- 右边：下载引导 + 其他信息 -->
+                    <div class="download-steps">
+                        <div class="stat-title" style="margin-top: 0;">
+                            <i class="fa-regular fa-cloud-arrow-down"></i> 游戏下载引导
+                        </div>
+                        <ol>
+                            <li>群文件（右上角“三矩形+菱形”）→ 宇宙沙盘文件夹 → 选择U35版本。</li>
+                            <li>下载压缩包，用解压软件解压，运行 <code>Universe Sandbox x64.exe</code>。</li>
+                            <li>本群不止宇宙沙盘，欢迎讨论任何不违规内容。</li>
+                        </ol>
+                        <hr>
+                        <div><i class="fa-regular fa-circle-info"></i> 请不要下载后立刻退群，否则可能会被拉黑。若因满员被清理，欢迎重加。</div>
+                        <hr>
+                        <div><i class="fa-regular fa-note-sticky"></i> 群备注：建议设置“昵称-擅长领域”。<br>
+                        <i class="fa-regular fa-hashtag"></i> 群分类：游戏 · 宇宙沙盘 · 奥秘交流</div>
+                        <div style="margin-top: 1rem; background: var(--card-bg-light); padding: 0.8rem; border-radius: 20px;">
+                            <i class="fa-regular fa-image"></i> 群规图片版本: 2026.2.14 修改
+                        </div>
+                    </div>
+                </div>
+                <!-- 额外提醒：群规版本与禁止 -->
+                <div style="margin-top: 1.5rem; background: var(--card-bg-solid-light); border-radius: 40px; padding: 0.8rem 1.5rem; display: flex; flex-wrap: wrap; gap: 20px;">
+                    <span><i class="fa-regular fa-ban"></i> 严禁盗用群规 · 仅限于本系列群</span>
+                    <span><i class="fa-regular fa-flag"></i> 群规索引: U2026.214-RC</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部分割信息 (显示在所有面板下方) -->
+        <div class="footer-note">
+            <span><i class="fa-regular fa-copyright"></i> 宇宙沙盘讨论群 · 主群 594977633</span>
+            <span><i class="fa-regular fa-message"></i> 群规若有疑问联系群主或管理员</span>
+        </div>
+    </div><!-- end tab-section -->
+</div><!-- end official-container -->
+</body>
+</html>

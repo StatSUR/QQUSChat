@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>群网站最初（Beta1）· 宇宙沙盘讨论群</title>
+    <link rel="icon" href="../../图像1.png" type="image/png" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== 跟随系统模式的色彩变量 ===== */
+        :root {
+            --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
+            --glass-bg-light: rgba(240, 248, 255, 0.4);
+            --glass-border-light: rgba(110, 160, 220, 0.45);
+            --card-glass-light: rgba(255, 255, 255, 0.7);
+            --text-primary-light: #13273f;
+            --text-secondary-light: #2a4a6e;
+            --accent-light: #1f7be0;
+            --accent-soft-light: #3f8cef;
+            --btn-blue: #2c7be5;
+            --shadow-glass: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
+            --star-base-light: rgba(80, 120, 180, 0.2);
+            --star-bright-light: rgba(100, 140, 200, 0.3);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
+                --glass-bg-light: rgba(18, 22, 30, 0.6);
+                --glass-border-light: rgba(140, 160, 190, 0.45);
+                --card-glass-light: rgba(28, 34, 44, 0.7);
+                --text-primary-light: #f0f3f8;
+                --text-secondary-light: #bfd4f0;
+                --accent-light: #7ca5e0;
+                --accent-soft-light: #6a9bdf;
+                --btn-blue: #5f8bc9;
+                --shadow-glass: 0 20px 35px -12px #000000cc;
+                --star-base-light: rgba(210, 225, 250, 0.85);
+                --star-bright-light: rgba(255, 248, 210, 0.95);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--body-bg-light);
+            color: var(--text-primary-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            line-height: 1.5;
+            position: relative;
+            transition: background 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .star-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star-layer::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(1px 1px at 20% 30%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 70% 85%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 45% 12%, var(--star-bright-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 90% 55%, var(--star-base-light) 1px, transparent 1px),
+                radial-gradient(1px 1px at 8% 92%, var(--star-bright-light) 1px, transparent 1px);
+            background-repeat: repeat;
+            background-size: 180px 180px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .star-layer::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 15% 45%, rgba(100, 140, 200, 0.2) 1px, transparent 1px),
+                radial-gradient(2px 2px at 62% 78%, var(--star-bright-light) 1.5px, transparent 1.5px);
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .star-layer::before {
+                background-image: radial-gradient(1px 1px at 20% 30%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1.5px 1.5px at 70% 85%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1px 1px at 45% 12%, var(--star-bright-light) 1px, transparent 1px),
+                    radial-gradient(2px 2px at 90% 55%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(1px 1px at 8% 92%, var(--star-bright-light) 1px, transparent 1px);
+                background-size: 180px 180px;
+                opacity: 0.9;
+                animation: starDrift1 80s linear infinite;
+            }
+            .star-layer::after {
+                background-image: radial-gradient(2px 2px at 15% 45%, rgba(255, 240, 180, 0.7) 1px, transparent 1px),
+                    radial-gradient(2.5px 2.5px at 62% 78%, var(--star-bright-light) 1.5px, transparent 1.5px),
+                    radial-gradient(1.8px 1.8px at 33% 22%, var(--star-base-light) 1px, transparent 1px),
+                    radial-gradient(3px 3px at 80% 38%, rgba(180, 210, 255, 0.6) 1.5px, transparent 1.5px),
+                    radial-gradient(2px 2px at 48% 93%, var(--star-bright-light) 1px, transparent 1px),
+                    radial-gradient(1.2px 1.2px at 95% 17%, var(--star-base-light) 1px, transparent 1px);
+                background-size: 300px 300px;
+                opacity: 0.85;
+                animation: starDrift2 110s linear infinite reverse;
+            }
+            body::after {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+                background-image: radial-gradient(0.6px 0.6px at 30% 70%, rgba(210, 230, 255, 0.4) 0.5px, transparent 0.5px);
+                background-repeat: repeat;
+                background-size: 80px 80px;
+                opacity: 0.6;
+                animation: starDrift3 60s linear infinite;
+            }
+        }
+
+        @keyframes starDrift1 {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 180px 120px, 250px 80px, 130px 200px, 80px 160px, 200px 90px; }
+        }
+        @keyframes starDrift2 {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 250px 180px, 180px 250px, 300px 120px, 200px 280px, 150px 200px, 280px 150px; }
+        }
+        @keyframes starDrift3 {
+            0% { background-position: 0 0; }
+            100% { background-position: 120px 80px; }
+        }
+
+        .console {
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+            animation: consoleFadeIn 0.7s ease-out;
+        }
+        @keyframes consoleFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .archive-detail-card {
+            backdrop-filter: blur(16px) saturate(200%);
+            -webkit-backdrop-filter: blur(16px) saturate(200%);
+            background: var(--card-glass-light);
+            border: 1px solid var(--glass-border-light);
+            box-shadow: var(--shadow-glass);
+            border-radius: 48px;
+            padding: 2rem 2.2rem;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-bottom: 1.2rem;
+        }
+        .archive-detail-card:hover {
+            border-color: var(--accent-soft-light);
+            background: rgba(255, 255, 255, 0.45);
+            transform: translateY(-2px);
+        }
+        @media (prefers-color-scheme: dark) {
+            .archive-detail-card:hover {
+                background: rgba(30, 40, 55, 0.75);
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--glass-border-light);
+            padding-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .card-header i {
+            font-size: 2rem;
+            color: var(--accent-light);
+            transition: transform 0.3s;
+        }
+        .archive-detail-card:hover .card-header i {
+            transform: rotate(-5deg) scale(1.08);
+        }
+        .card-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary-light);
+        }
+        .archive-note {
+            background: var(--card-glass-light);
+            backdrop-filter: blur(8px);
+            border: 1px dashed var(--glass-border-light);
+            border-radius: 24px;
+            padding: 0.9rem 1.2rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary-light);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .archive-note:hover {
+            border-color: var(--accent-soft-light);
+            background: rgba(255,255,255,0.5);
+        }
+        @media (prefers-color-scheme: dark) {
+            .archive-note:hover {
+                background: rgba(40,55,75,0.7);
+            }
+        }
+
+        .screenshot-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 1.8rem 0;
+        }
+        .screenshot-item {
+            background: var(--card-glass-light);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 1rem;
+            border: 1px solid var(--glass-border-light);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .screenshot-item a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .screenshot-item:hover {
+            border-color: var(--accent-soft-light);
+            transform: scale(1.01);
+            box-shadow: 0 8px 24px rgba(30, 110, 200, 0.15);
+        }
+        .screenshot-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            margin-bottom: 0.6rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            display: block;
+        }
+        .screenshot-item a:hover img {
+            transform: scale(1.02);
+        }
+        .screenshot-caption {
+            font-size: 0.78rem;
+            color: var(--text-secondary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 1.4rem;
+            padding: 0.9rem 1.5rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary-light);
+            background: var(--card-glass-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border-light);
+            border-radius: 40px;
+            box-shadow: 0 4px 16px -6px rgba(0,0,0,0.06);
+            transition: all 0.25s ease;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .footer-row:hover {
+            border-color: var(--accent-soft-light);
+            background: rgba(255,255,255,0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px -8px rgba(30,110,200,0.15);
+        }
+        @media (prefers-color-scheme: dark) {
+            .footer-row:hover {
+                background: rgba(35,48,65,0.8);
+                box-shadow: 0 8px 22px -8px rgba(100,150,220,0.25);
+            }
+        }
+        .footer-row .footer-sep {
+            color: var(--accent-soft-light);
+            font-weight: 300;
+            opacity: 0.5;
+            user-select: none;
+        }
+        .footer-row strong {
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+        .footer-row .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(34,139,34,0.15);
+            color: #2d8a2d;
+            padding: 0.18rem 0.7rem;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 0.76rem;
+            white-space: nowrap;
+        }
+        @media (prefers-color-scheme: dark) {
+            .footer-row .status-badge {
+                background: rgba(80,200,80,0.15);
+                color: #6fcf6f;
+            }
+        }
+        .archive-image-notice {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-secondary-light);
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 720px) {
+            .archive-detail-card {
+                border-radius: 32px;
+                padding: 1.2rem 1rem;
+            }
+            .card-header h2 {
+                font-size: 1.3rem;
+            }
+            .screenshot-item {
+                border-radius: 20px;
+                padding: 0.6rem;
+            }
+            .footer-row {
+                border-radius: 28px;
+                padding: 0.7rem 1rem;
+                font-size: 0.74rem;
+                gap: 4px 10px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-soft-light);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="star-layer"></div>
+
+<div class="console">
+    <div class="archive-detail-card">
+        <div class="card-header">
+            <i class="fas fa-globe"></i>
+            <h2>群网站最初（Beta）· 历史档案</h2>
+        </div>
+
+        <div class="archive-note">
+            <i class="fas fa-info-circle" style="font-size: 1.2rem; color: var(--accent-light);"></i>
+            <span>本档案归档了群网站在 <strong>Beta 阶段</strong> 的三次迭代截图及文件，记录了网站最初的模样。</span>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: var(--accent-light); font-size: 1.1rem; margin-bottom: 1rem;">
+                <i class="fas fa-camera-retro"></i> 截图于 2026.8.11
+            </h3>
+            <div class="screenshot-section">
+                <!-- Beta1 跳转到 Beta1.html -->
+                <div class="screenshot-item">
+                    <a href="Beta1.html" target="_blank" title="打开 Beta1 版本网站">
+                        <img src="The Photo/Beta1.png" alt="群网站 Beta1 截图">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta1
+                    </div>
+                </div>
+
+                <!-- Beta2 深浅自适应，跳转到 Beta2.html -->
+                <div class="screenshot-item">
+                    <a href="Beta2.html" target="_blank" title="打开 Beta2 版本网站">
+                        <img id="img-beta2" src="The Photo/Beta2Light.png" alt="群网站 Beta2 截图"
+                             data-light-src="The Photo/Beta2Light.png"
+                             data-dark-src="The Photo/Beta2Dark.png">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta2
+                    </div>
+                </div>
+
+                <!-- Beta3 深浅自适应，跳转到 Beta3.html -->
+                <div class="screenshot-item">
+                    <a href="Beta3.html" target="_blank" title="打开 Beta3 版本网站">
+                        <img id="img-beta3" src="The Photo/Beta3Light.png" alt="群网站 Beta3 截图"
+                             data-light-src="The Photo/Beta3Light.png"
+                             data-dark-src="The Photo/Beta3Dark.png">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta3
+                    </div>
+                </div>
+            </div>
+            <p class="archive-image-notice">图片仅作为历史档案 · 点击卡片可访问对应网站</p>
+        </div>
+
+        <div class="footer-row">
+            <i class="fas fa-user-pen" style="color: var(--accent-soft-light);"></i> 归档人员: <strong>星星RXC</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-calendar-plus" style="color: var(--accent-soft-light);"></i> 归档时间: <strong>2026.8.11</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-tag" style="color: var(--accent-soft-light);"></i> 文件类型: <strong>网站的构建阶段</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-hashtag" style="color: var(--accent-soft-light);"></i> 归档编号: <strong>Archive202602-2</strong>
+            <span class="footer-sep">|</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                <i class="fas fa-circle-check" style="color: #2d8a2d;"></i> 当前状态: <span class="status-badge"><i class="fas fa-archive"></i> 已归档</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        function applyTheme() {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.querySelectorAll('img[data-light-src][data-dark-src]').forEach(img => {
+                img.src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+            });
+        }
+        applyTheme();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+    })();
+</script>
+</body>
+</html>
