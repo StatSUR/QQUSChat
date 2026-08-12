@@ -1,9 +1,9 @@
-/* ===== 档案页样式：毛玻璃 = 模糊 + 透明层，星空仅 before/after，无 saturate ===== */
+/* ===== 档案页：单层全局毛玻璃 (60px) + 星空保留 ===== */
 :root {
     --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
-    --glass-bg-light: rgba(240, 248, 255, 0.4);
+    --glass-bg-light: rgba(240, 248, 255, 0.4);           /* 存档未使用，保留 */
     --glass-border-light: rgba(110, 160, 220, 0.45);
-    --card-glass-light: rgba(255, 255, 255, 0.7);
+    --card-glass-light: rgba(255, 255, 255, 0.78);        /* 原0.7 → 0.78 补偿强模糊 */
     --text-primary-light: #13273f;
     --text-secondary-light: #2a4a6e;
     --accent-light: #1f7be0;
@@ -12,7 +12,7 @@
     --shadow-glass: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
     --star-base-light: rgba(80, 120, 180, 0.2);
     --star-bright-light: rgba(100, 140, 200, 0.3);
-    --blur-amount: blur(16px);
+    /* 不再使用独立 blur，由全局层统一处理 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +20,7 @@
         --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
         --glass-bg-light: rgba(18, 22, 30, 0.6);
         --glass-border-light: rgba(140, 160, 190, 0.45);
-        --card-glass-light: rgba(28, 34, 44, 0.7);
+        --card-glass-light: rgba(28, 34, 44, 0.78);        /* 原0.7 → 0.78 */
         --text-primary-light: #f0f3f8;
         --text-secondary-light: #bfd4f0;
         --accent-light: #7ca5e0;
@@ -47,6 +47,16 @@ body {
     position: relative;
     transition: background 0.3s ease;
     overflow-x: hidden;
+}
+
+/* ---------- 全局唯一毛玻璃模糊层 (60px) ---------- */
+.glass-blur-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
 }
 
 /* ---------- 星空层（仅 before/after，移除 body::after）---------- */
@@ -140,10 +150,9 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- 毛玻璃卡片（仅模糊+透明背景）---------- */
+/* ---------- 毛玻璃卡片（仅保留背景和边框，不再叠加自身模糊）---------- */
 .archive-main-card {
-    backdrop-filter: var(--blur-amount);
-    -webkit-backdrop-filter: var(--blur-amount);
+    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     box-shadow: var(--shadow-glass);
@@ -162,14 +171,14 @@ body {
 
 .archive-main-card:hover {
     border-color: var(--accent-soft-light);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);        /* 原0.5→0.6 */
     transform: translateY(-3px);
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
     .archive-main-card:hover {
-        background: rgba(30, 40, 55, 0.8);
+        background: rgba(30, 40, 55, 0.85);       /* 原0.8→0.85 */
         box-shadow: 0 20px 40px -12px #000000dd;
     }
 }
@@ -220,13 +229,12 @@ body {
     flex: 1;
 }
 
-/* 档案条目按钮 */
+/* 档案条目按钮 - 移除自身模糊 */
 .archive-entry-btn {
     display: flex;
     align-items: center;
     gap: 16px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.08);
@@ -243,7 +251,7 @@ body {
     overflow: hidden;
 }
 
-/* 渐变扫光伪元素 */
+/* 渐变扫光伪元素（保持不变） */
 .archive-entry-btn::before {
     content: "";
     position: absolute;
@@ -260,7 +268,7 @@ body {
     border-color: var(--accent-light);
     transform: translateY(-4px) scale(1.015);
     box-shadow: 0 16px 32px -10px rgba(30, 110, 200, 0.3);
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);          /* 原0.6→0.7 */
 }
 
 .archive-entry-btn:hover::before {
@@ -274,7 +282,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .archive-entry-btn:hover {
-        background: rgba(40, 55, 75, 0.8);
+        background: rgba(40, 55, 75, 0.85);         /* 原0.8→0.85 */
         box-shadow: 0 16px 32px -10px rgba(100, 150, 220, 0.35);
     }
     .archive-entry-btn:hover::before {
@@ -367,7 +375,7 @@ body {
     transform: translateX(6px);
 }
 
-/* 占位条目 */
+/* 占位条目 - 移除自身模糊 */
 .placeholder-entry {
     display: flex;
     align-items: center;
@@ -382,14 +390,13 @@ body {
     opacity: 0.55;
     transition: all 0.3s ease;
     cursor: default;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.25);
+    /* 移除 backdrop-filter */
+    background: rgba(255, 255, 255, 0.35);          /* 原0.25→0.35 */
 }
 
 @media (prefers-color-scheme: dark) {
     .placeholder-entry {
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.05);       /* 原0.03→0.05 */
     }
 }
 
@@ -404,7 +411,7 @@ body {
     border-color: var(--accent-soft-light);
 }
 
-/* 返回链接 */
+/* 返回链接 - 移除自身模糊 */
 .back-link-row {
     display: flex;
     justify-content: center;
@@ -420,8 +427,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9rem;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     color: var(--accent-light);
