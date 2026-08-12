@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>群网站最初（Beta1）· 宇宙沙盘讨论群</title>
+    <link rel="icon" href="../../图像1.png" type="image/png" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 通用档案样式 -->
+    <link rel="stylesheet" href="../archive-style.css">
+</head>
+<body>
+<div class="star-layer"></div>
+
+<div class="console">
+    <div class="archive-detail-card">
+        <div class="card-header">
+            <i class="fas fa-globe"></i>
+            <h2>群网站最初（Beta）· 历史档案</h2>
+        </div>
+
+        <div class="archive-note">
+            <i class="fas fa-info-circle" style="font-size: 1.2rem; color: var(--accent-light);"></i>
+            <span>本档案归档了群网站在 <strong>Beta 阶段</strong> 的三次迭代截图及文件，记录了网站最初的模样。</span>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: var(--accent-light); font-size: 1.1rem; margin-bottom: 1rem;">
+                <i class="fas fa-camera-retro"></i> 截图于 2026.8.11
+            </h3>
+            <div class="screenshot-section">
+                <!-- Beta1 跳转到 Beta1.html -->
+                <div class="screenshot-item">
+                    <a href="Beta1.html" target="_blank" title="打开 Beta1 版本网站">
+                        <img src="The Photo/Beta1.png" alt="群网站 Beta1 截图">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta1
+                    </div>
+                </div>
+
+                <!-- Beta2 深浅自适应，跳转到 Beta2.html -->
+                <div class="screenshot-item">
+                    <a href="Beta2.html" target="_blank" title="打开 Beta2 版本网站">
+                        <img id="img-beta2" src="The Photo/Beta2Light.png" alt="群网站 Beta2 截图"
+                             data-light-src="The Photo/Beta2Light.png"
+                             data-dark-src="The Photo/Beta2Dark.png">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta2
+                    </div>
+                </div>
+
+                <!-- Beta3 深浅自适应，跳转到 Beta3.html -->
+                <div class="screenshot-item">
+                    <a href="Beta3.html" target="_blank" title="打开 Beta3 版本网站">
+                        <img id="img-beta3" src="The Photo/Beta3Light.png" alt="群网站 Beta3 截图"
+                             data-light-src="The Photo/Beta3Light.png"
+                             data-dark-src="The Photo/Beta3Dark.png">
+                    </a>
+                    <div class="screenshot-caption">
+                        <i class="fas fa-image"></i> 群网站 Beta3
+                    </div>
+                </div>
+            </div>
+            <p class="archive-image-notice">图片仅作为历史档案 · 点击卡片可访问对应网站</p>
+        </div>
+
+        <div class="footer-row">
+            <i class="fas fa-user-pen" style="color: var(--accent-soft-light);"></i> 归档人员: <strong>星星RXC</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-calendar-plus" style="color: var(--accent-soft-light);"></i> 归档时间: <strong>2026.8.11</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-tag" style="color: var(--accent-soft-light);"></i> 文件类型: <strong>网站的构建阶段</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-hashtag" style="color: var(--accent-soft-light);"></i> 归档编号: <strong>Archive202602-2</strong>
+            <span class="footer-sep">|</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                <i class="fas fa-circle-check" style="color: #2d8a2d;"></i> 当前状态: <span class="status-badge"><i class="fas fa-archive"></i> 已归档</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        function applyTheme() {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.querySelectorAll('img[data-light-src][data-dark-src]').forEach(img => {
+                img.src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+            });
+        }
+        applyTheme();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+    })();
+</script>
+</body>
+</html>

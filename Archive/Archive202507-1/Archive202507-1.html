@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>U2025.729-RC 群规档案 · 宇宙沙盘讨论群</title>
+    <link rel="icon" href="../../图像1.png" type="image/png" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 通用档案样式 -->
+    <link rel="stylesheet" href="../archive-style.css">
+</head>
+<body oncopy="return false" oncut="return false" onpaste="return false">
+<div class="star-layer"></div>
+
+<div class="console">
+    <div class="archive-detail-card">
+        <div class="card-header">
+            <i class="fas fa-gavel"></i>
+            <h2>U2025.729-RC 群规 · 历史档案</h2>
+        </div>
+
+        <div class="archive-note">
+            <i class="fas fa-info-circle" style="font-size: 1.2rem; color: var(--accent-light);"></i>
+            <span>本群规写于 <strong>2025.7.29</strong> 的 <strong>星星RXC</strong>，该内容仅作为记录档案，不作为正式文档。</span>
+        </div>
+
+        <!-- 仅展示一张群规截图 -->
+        <div style="margin-bottom: 1rem;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: var(--accent-light); font-size: 1.1rem; margin-bottom: 1rem;">
+                <i class="fas fa-camera-retro"></i> 截图于 2025.7.29
+            </h3>
+            <div class="screenshot-section">
+                <div class="screenshot-item">
+                    <img src="U2025.729-RC.png" alt="U2025.729-RC 群规截图" onerror="this.style.opacity='0.3'; this.style.border='2px dashed #ccc';">
+                    <div class="screenshot-caption"><i class="fas fa-image"></i> U2025.729-RC 群规</div>
+                </div>
+            </div>
+            <p class="archive-image-notice">图片仅作为历史档案</p>
+        </div>
+
+        <div class="footer-row">
+            <i class="fas fa-user-pen" style="color: var(--accent-soft-light);"></i> 归档人员: <strong>星星RXC</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-calendar-plus" style="color: var(--accent-soft-light);"></i> 归档时间: <strong>2026.8.4</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-tag" style="color: var(--accent-soft-light);"></i> 文件类型: <strong>群规文件</strong>
+            <span class="footer-sep">|</span>
+            <i class="fas fa-hashtag" style="color: var(--accent-soft-light);"></i> 归档编号: <strong>Archive202507-1</strong>
+            <span class="footer-sep">|</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                <i class="fas fa-circle-check" style="color: #2d8a2d;"></i> 当前状态: <span class="status-badge"><i class="fas fa-archive"></i> 已归档</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.addEventListener('selectstart', function(e) { e.preventDefault(); });
+        document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'a' || e.key === 'x' || e.key === 'u' || e.key === 's' || e.key === 'p')) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.key === 'F12') { e.preventDefault(); }
+        });
+        document.addEventListener('touchstart', function(e) {
+            if (e.target && e.target.tagName === 'IMG') { e.preventDefault(); }
+        }, { passive: false });
+    })();
+</script>
+</body>
+</html>
