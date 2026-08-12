@@ -1,9 +1,11 @@
-/* ===== 手机版样式：毛玻璃 = 模糊 + 透明层，星空仅 before/after，性能优化 ===== */
+/* ===== 手机版：单层全局毛玻璃 (60px) + 星空保留 ===== */
 :root {
+    /* 浅色模式 */
     --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
-    --glass-bg-light: rgba(240, 248, 255, 0.75);
+    /* 微调玻璃背景透明度，补偿强模糊后的层次感 */
+    --glass-bg-light: rgba(240, 248, 255, 0.82);        /* 原0.75 → 0.82 */
     --glass-border-light: rgba(110, 160, 220, 0.5);
-    --card-glass-light: rgba(255, 255, 255, 0.8);
+    --card-glass-light: rgba(255, 255, 255, 0.85);      /* 原0.8 → 0.85 */
     --text-primary-light: #13273f;
     --text-secondary-light: #2a4a6e;
     --accent-light: #1f7be0;
@@ -11,15 +13,14 @@
     --btn-blue: #2c7be5;
     --shadow-glass: 0 8px 20px -8px rgba(0, 0, 0, 0.08);
     --star-opacity: 0.3;
-    --blur-amount: blur(14px);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
-        --glass-bg-light: rgba(18, 22, 30, 0.8);
+        --glass-bg-light: rgba(18, 22, 30, 0.85);       /* 原0.8 → 0.85 */
         --glass-border-light: rgba(140, 160, 190, 0.5);
-        --card-glass-light: rgba(28, 34, 44, 0.85);
+        --card-glass-light: rgba(28, 34, 44, 0.88);     /* 原0.85 → 0.88 */
         --text-primary-light: #f0f3f8;
         --text-secondary-light: #bfd4f0;
         --accent-light: #7ca5e0;
@@ -47,6 +48,16 @@ body {
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     isolation: isolate;
+}
+
+/* ---------- 全局唯一毛玻璃模糊层 (60px) ---------- */
+.glass-blur-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
 }
 
 /* ---------- 星空层：使用伪元素，深色模式加动画 ---------- */
@@ -123,7 +134,7 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 所有毛玻璃组件：仅模糊+透明背景 */
+/* 所有毛玻璃组件：移除各自的 backdrop-filter，仅保留背景与边框 */
 .header-panel,
 .tab-container,
 .detail-card,
@@ -137,8 +148,6 @@ body {
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     box-shadow: var(--shadow-glass);
-    backdrop-filter: var(--blur-amount);
-    -webkit-backdrop-filter: var(--blur-amount);
     transition: all 0.2s ease;
 }
 
@@ -156,7 +165,7 @@ body {
 }
 .header-panel:hover {
     border-color: var(--accent-soft-light);
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.88);
     transform: translateY(-2px);
 }
 .header-panel img {
@@ -356,7 +365,7 @@ hr { border: none; height: 1px; background: var(--glass-border-light); margin: 0
 }
 .intro-bubble:hover {
     border: 1px solid var(--accent-soft-light); transform: scale(1.01);
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.88);
 }
 
 .panel-rules > div:first-child {
@@ -377,5 +386,5 @@ hr { border: none; height: 1px; background: var(--glass-border-light); margin: 0
 
 @media (prefers-color-scheme: dark) {
     .header-panel:hover,
-    .intro-bubble:hover { background: rgba(40, 60, 90, 0.9); }
+    .intro-bubble:hover { background: rgba(40, 60, 90, 0.92); }
 }
