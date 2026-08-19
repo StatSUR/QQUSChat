@@ -1,7 +1,7 @@
 /* ===== 跟随系统模式的色彩变量 (已针对单层 60px 模糊微调透明度) ===== */
 :root {
     /* 浅色模式 (明亮通透) */
-    --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
+    --body-bg-light: linear-gradient(135deg, #eaf4ff 0%, #fdeef2 100%);
     --glass-bg-light: rgba(240, 248, 255, 0.52);          /* 原0.48→0.52，匹配强模糊后的朦胧感 */
     --glass-border-light: rgba(110, 160, 220, 0.45);
     --card-glass-light: rgba(255, 255, 255, 0.82);       /* 原0.80→0.82，保持通透性 */
