@@ -1,10 +1,15 @@
-/* ===== 跟随系统模式的色彩变量 (已针对单层 60px 模糊微调透明度) ===== */
+/* =====================================================================
+   宇宙沙盘讨论群 · 合并样式表
+   桌面端样式为默认，移动端样式位于文件末尾的 @media (max-width: 768px)
+   ===================================================================== */
+
+/* ===== 色彩变量 (桌面端) ===== */
 :root {
     /* 浅色模式 (明亮通透) */
     --body-bg-light: linear-gradient(135deg, #eaf4ff 0%, #fdeef2 100%);
-    --glass-bg-light: rgba(240, 248, 255, 0.52);          /* 原0.48→0.52，匹配强模糊后的朦胧感 */
+    --glass-bg-light: rgba(240, 248, 255, 0.52);
     --glass-border-light: rgba(110, 160, 220, 0.45);
-    --card-glass-light: rgba(255, 255, 255, 0.82);       /* 原0.80→0.82，保持通透性 */
+    --card-glass-light: rgba(255, 255, 255, 0.82);
     --text-primary-light: #13273f;
     --text-secondary-light: #2a4a6e;
     --accent-light: #1f7be0;
@@ -13,17 +18,16 @@
     --shadow-glass: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
     --star-base-light: rgba(80, 120, 180, 0.2);
     --star-bright-light: rgba(100, 140, 200, 0.3);
-    /* 全局单层模糊：60px，覆盖所有背后内容 */
+    --star-opacity: 0.3;
     --glass-blur: blur(60px);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        /* 深色模式 (深邃星空) */
         --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
-        --glass-bg-light: rgba(18, 22, 30, 0.72);         /* 原0.68→0.72 */
+        --glass-bg-light: rgba(18, 22, 30, 0.72);
         --glass-border-light: rgba(140, 160, 190, 0.45);
-        --card-glass-light: rgba(28, 34, 44, 0.82);       /* 原0.78→0.82 */
+        --card-glass-light: rgba(28, 34, 44, 0.82);
         --text-primary-light: #f0f3f8;
         --text-secondary-light: #bfd4f0;
         --accent-light: #7ca5e0;
@@ -32,6 +36,7 @@
         --shadow-glass: 0 20px 35px -12px #000000cc;
         --star-base-light: rgba(210, 225, 250, 0.85);
         --star-bright-light: rgba(255, 248, 210, 0.95);
+        --star-opacity: 0.85;
         --glass-blur: blur(60px);
     }
 }
@@ -55,6 +60,8 @@ body {
     position: relative;
     transition: background 0.3s ease;
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- 全局唯一毛玻璃模糊层 (60px) ---------- */
@@ -67,7 +74,7 @@ body {
     -webkit-backdrop-filter: var(--glass-blur);
 }
 
-/* ---------- 繁星层：深色模式显示浓厚繁星，浅色模式极淡星尘 ---------- */
+/* ---------- 繁星层 ---------- */
 .star-layer {
     position: fixed;
     top: 0;
@@ -76,6 +83,7 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 0;
+    background: none;
     transform: translateZ(0);
     will-change: background-position;
 }
@@ -144,11 +152,11 @@ body {
 }
 
 @keyframes starDrift1 {
-    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    0%   { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
     100% { background-position: 180px 120px, 250px 80px, 130px 200px, 80px 160px, 200px 90px; }
 }
 @keyframes starDrift2 {
-    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+    0%   { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
     100% { background-position: 250px 180px, 180px 250px, 300px 120px, 200px 280px, 150px 200px, 280px 150px; }
 }
 
@@ -163,10 +171,10 @@ body {
 
 @keyframes consoleFadeIn {
     from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 所有毛玻璃组件：仅保留背景与边框，由全局模糊层统一模糊 */
+/* 所有毛玻璃组件 */
 .header-panel,
 .tab-container,
 .detail-card,
@@ -186,7 +194,7 @@ body {
                 box-shadow 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
-/* 头部面板 */
+/* ---------- 头部面板 ---------- */
 .header-panel {
     border-radius: 60px;
     padding: 1rem 2rem;
@@ -195,20 +203,40 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
 }
 .header-panel:hover {
     border-color: var(--accent-soft-light);
-    background: rgba(255, 255, 255, 0.55);   /* 微调匹配强模糊 */
+    background: rgba(255, 255, 255, 0.55);
     transform: translateY(-2px);
 }
 
-.group-name-copy h1 {
+.header-panel .group-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--glass-border-light);
+    flex-shrink: 0;
+}
+
+.group-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.group-name-copy h1,
+#groupNameDisplay {
     font-size: 2.2rem;
     font-weight: 600;
     letter-spacing: -0.3px;
     cursor: pointer;
     transition: text-shadow 0.2s;
+    margin: 0;
+    line-height: 1.2;
 }
+
 .copy-btn {
     background: var(--card-glass-light);
     border-radius: 50px;
@@ -218,20 +246,24 @@ body {
     gap: 10px;
     cursor: pointer;
     font-weight: 500;
+    align-self: flex-start;
 }
 .copy-btn:hover {
     background: var(--accent-soft-light);
     color: white;
     transform: translateY(-2px);
 }
+
 .group-meta {
     display: flex;
     gap: 24px;
     font-weight: 500;
     color: var(--text-secondary-light);
+    flex-wrap: wrap;
+    margin-left: auto;
 }
 
-/* 选项卡容器 */
+/* ---------- 选项卡容器 ---------- */
 .tab-container {
     border-radius: 48px;
     padding: 2rem;
@@ -290,10 +322,10 @@ body {
 }
 @keyframes panelEntry {
     from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 内层卡片 */
+/* ---------- 内层卡片 ---------- */
 .detail-card,
 .download-guide {
     border-radius: 32px;
@@ -317,11 +349,15 @@ body {
     grid-template-columns: 1.2fr 0.9fr;
     gap: 1.8rem;
 }
-@media (max-width: 720px) {
-    .grid-2 { grid-template-columns: 1fr; }
+
+/* 资源面板网格 */
+.resources-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1.8rem;
 }
 
-/* 管理团队 */
+/* ---------- 管理团队 ---------- */
 .admin-grid {
     display: flex;
     flex-direction: column;
@@ -375,6 +411,14 @@ body {
     flex: 1;
 }
 
+.owner-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+}
+
 .role-desc {
     font-size: 0.7rem;
     font-weight: normal;
@@ -393,7 +437,7 @@ body {
     font-weight: 600;
 }
 
-/* 群规样式 */
+/* ---------- 群规样式 ---------- */
 .rule-chapter { margin-bottom: 1.5rem; }
 .rule-chapter h4 {
     font-size: 1.2rem;
@@ -428,18 +472,82 @@ body {
     transform: scale(1.2);
     color: var(--accent-light);
 }
+
+.panel-rules-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+.panel-rules-header i {
+    font-size: 2rem;
+    color: var(--accent-light);
+}
+.panel-rules-header h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
 .note {
     border-left: 4px solid var(--accent-light);
     padding: 0.8rem 1.2rem;
     border-radius: 20px;
     margin: 0.8rem 0;
+    line-height: 1.6;
 }
+
+/* 附则底部专属样式：分段显示 */
+.note-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 1rem 1.2rem;
+}
+
+.note-text {
+    margin: 0;
+    color: var(--text-secondary-light);
+    font-size: 0.88rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-text p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.note-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary-light);
+    border-top: 1px dashed var(--glass-border-light);
+    padding-top: 10px;
+}
+
+.note-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .stat-item {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 0.4rem 1.2rem;
     border-radius: 48px;
+}
+.stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
 }
 .footer-bar {
     margin-top: 2rem;
@@ -449,6 +557,7 @@ body {
     border-top: 1px solid var(--glass-border-light);
     padding-top: 1rem;
     color: var(--text-secondary-light);
+    gap: 12px;
 }
 .contact-link {
     display: inline-flex;
@@ -475,12 +584,35 @@ body {
     color: white;
     transform: rotate(-5deg) scale(1.1);
 }
+
+/* 联系按钮容器 */
+.contact-links-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+/* 前两个按钮等宽平分一行 */
+.contact-links-row .contact-link {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+}
+
+/* 群历史档案独占整行 */
+.contact-links-row .contact-link-wide {
+    flex: 1 1 100%;
+    justify-content: center;
+}
+
 hr {
     border: none;
     height: 1px;
     background: var(--glass-border-light);
     margin: 1rem 0;
 }
+
 .copy-feedback {
     position: fixed;
     bottom: 20px;
@@ -489,12 +621,13 @@ hr {
     color: white;
     padding: 0.5rem 1.5rem;
     border-radius: 60px;
-    backdrop-filter: blur(16px);  /* 短暂提示保留独立模糊，不影响结构 */
+    backdrop-filter: blur(16px);
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
     z-index: 200;
 }
+.copy-feedback.show { opacity: 1; }
 
 .intro-bubble {
     background: var(--card-glass-light);
@@ -507,7 +640,7 @@ hr {
 .intro-bubble:hover {
     border: 1px solid var(--accent-soft-light);
     transform: scale(1.01);
-    background: rgba(255, 255, 255, 0.73);  /* 微调 */
+    background: rgba(255, 255, 255, 0.73);
 }
 @media (prefers-color-scheme: dark) {
     .intro-bubble:hover {
@@ -515,10 +648,30 @@ hr {
     }
 }
 
+/* 下载指南 */
+.dl-step { margin-bottom: 1.2rem; }
+.dl-step h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-light);
+    margin-bottom: 0.5rem;
+}
+.dl-step p {
+    margin-left: 1.5rem;
+    color: var(--text-secondary-light);
+}
+
+.logo-date {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-light);
+}
+
 ::-webkit-scrollbar { width: 6px; background: rgba(0,0,0,0.1); }
 ::-webkit-scrollbar-thumb { background: var(--accent-soft-light); border-radius: 10px; }
 
-/* ========== 深色模式：全部依靠全局 60px 模糊，零散 backdrop-filter 已完全移除 ========== */
+/* ---------- 深色模式统一调整 ---------- */
 @media (prefers-color-scheme: dark) {
     .header-panel,
     .detail-card,
@@ -529,17 +682,14 @@ hr {
     .admin-tag,
     .copy-btn,
     .contact-link {
-        background: rgba(15, 22, 34, 0.34) !important;   /* 深色下微提透明度 */
+        background: rgba(15, 22, 34, 0.34) !important;
     }
-
     .tab-container {
         background: rgba(8, 14, 24, 0.40) !important;
     }
-
     .tab-nav label {
         background: rgba(20, 28, 40, 0.34) !important;
     }
-
     .header-panel:hover {
         background: rgba(35, 55, 80, 0.46) !important;
     }
@@ -558,11 +708,326 @@ hr {
         background: var(--accent-soft-light) !important;
         color: white;
     }
-
     .copy-btn {
         color: #f0f3f8 !important;
     }
     .copy-btn i {
         color: #f0f3f8;
+    }
+    .owner-tag i.fa-crown {
+        color: #f5b342 !important;
+    }
+    .owner-tag:hover i.fa-crown {
+        color: #ffecb3 !important;
+    }
+}
+
+/* =====================================================================
+   移动端样式：<= 768px 生效
+   ===================================================================== */
+@media (max-width: 768px) {
+
+    /* ----- 变量覆盖：移动端玻璃层更实一点 ----- */
+    :root {
+        --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
+        --glass-bg-light: rgba(240, 248, 255, 0.82);
+        --glass-border-light: rgba(110, 160, 220, 0.5);
+        --card-glass-light: rgba(255, 255, 255, 0.85);
+        --shadow-glass: 0 8px 20px -8px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
+            --glass-bg-light: rgba(18, 22, 30, 0.85);
+            --glass-border-light: rgba(140, 160, 190, 0.5);
+            --card-glass-light: rgba(28, 34, 44, 0.88);
+            --shadow-glass: 0 12px 28px -10px #00000099;
+        }
+    }
+
+    /* ----- 基础布局 ----- */
+    body {
+        align-items: flex-start;
+        padding: 0.6rem;
+        isolation: isolate;
+    }
+
+    .console {
+        max-width: 100%;
+        animation: consoleFadeIn 0.5s ease-out;
+    }
+
+    @keyframes consoleFadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----- 头部面板：垂直布局 ----- */
+    .header-panel {
+        border-radius: 36px;
+        padding: 1.2rem 1rem;
+        margin-bottom: 1.2rem;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        text-align: center;
+    }
+    .header-panel:hover {
+        background: rgba(255, 255, 255, 0.88);
+    }
+    .header-panel .group-avatar {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .group-title-block {
+        align-items: center;
+        width: 100%;
+    }
+
+    #groupNameDisplay {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    .copy-btn {
+        align-self: center !important;
+        padding: 0.55rem 1.4rem;
+        font-size: 0.9rem;
+        min-height: 42px;
+        touch-action: manipulation;
+    }
+    .copy-btn:active { transform: scale(0.96); transition: transform 0.1s; }
+
+    .group-meta {
+        display: flex !important;
+        gap: 12px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        margin-left: 0 !important;
+        font-size: 0.82rem;
+        width: 100%;
+    }
+    .group-meta span { white-space: nowrap; }
+
+    /* ----- 选项卡 ----- */
+    .tab-container {
+        border-radius: 32px;
+        padding: 1rem 0.9rem;
+    }
+    .tab-nav {
+        gap: 0.45rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.6rem;
+        justify-content: center;
+    }
+    .tab-nav label {
+        padding: 0.55rem 1rem;
+        font-size: 0.82rem;
+        gap: 6px;
+        min-height: 40px;
+        touch-action: manipulation;
+        white-space: nowrap;
+    }
+    .tab-nav label:active { transform: scale(0.95); transition: transform 0.1s; }
+
+    .panels { min-height: 300px; }
+    .panel { animation: panelEntry 0.3s ease; }
+    @keyframes panelEntry {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----- 卡片 ----- */
+    .detail-card,
+    .download-guide {
+        border-radius: 24px;
+        padding: 1.1rem 1rem;
+        margin-bottom: 0.8rem;
+    }
+    .card-title {
+        gap: 10px;
+        font-size: 1.1rem;
+        padding-left: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .grid-2 { grid-template-columns: 1fr; gap: 1rem; }
+
+    .resources-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* ----- 管理团队 ----- */
+    .admin-grid { gap: 0.7rem; margin: 1rem 0; }
+    .admin-tag {
+        border-radius: 50px;
+        padding: 0.55rem 1rem;
+        gap: 10px;
+        min-height: 44px;
+    }
+    .admin-tag:hover { transform: translateX(4px) scale(1.01); }
+    .admin-tag i {
+        font-size: 1.5rem;
+        width: 1.6rem;
+    }
+    .avatar-circle {
+        width: 1.7rem;
+        height: 1.7rem;
+    }
+    .admin-tag span {
+        font-size: 0.9rem;
+        min-width: 0;
+        word-break: break-word;
+    }
+
+    .role-desc {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+        margin-left: 6px;
+        white-space: nowrap;
+    }
+    .badge {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.7rem;
+        margin-bottom: 4px;
+    }
+
+    /* ----- 群规 ----- */
+    .rule-chapter { margin-bottom: 1.2rem; }
+    .rule-chapter h4 {
+        font-size: 1.05rem;
+        gap: 6px;
+    }
+    .rule-items li {
+        padding-left: 1.6rem;
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+    .rule-items li:hover { transform: translateX(4px); }
+    .rule-items li i { font-size: 0.6rem; }
+
+    .panel-rules-header { margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
+    .panel-rules-header i { font-size: 1.6rem !important; }
+    .panel-rules-header h3 { font-size: 1.35rem !important; }
+
+    .note {
+        padding: 0.6rem 0.9rem;
+        border-radius: 16px;
+        margin: 0.6rem 0;
+        font-size: 0.8rem;
+        line-height: 1.45;
+    }
+
+    /* 附则底部样式：手机端修复溢出 */
+    .note-footer {
+        padding: 1rem 1.1rem;
+        gap: 10px;
+    }
+    .note-text {
+        font-size: 0.82rem;
+        gap: 6px;
+    }
+    .note-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding-top: 10px;
+        font-size: 0.78rem;
+    }
+    .note-meta span {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .stat-item {
+        padding: 0.35rem 0.9rem;
+        font-size: 0.78rem;
+        margin-bottom: 4px;
+    }
+    .stat-row { gap: 6px; }
+
+    .footer-bar {
+        margin-top: 1.2rem;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.75rem;
+        padding-top: 0.8rem;
+        text-align: center;
+    }
+
+    /* ----- 联系按钮 ----- */
+    .contact-link {
+        padding: 0.55rem 1.1rem;
+        font-size: 0.85rem;
+        min-height: 42px;
+        touch-action: manipulation;
+        width: 100%;
+        justify-content: center;
+    }
+    .contact-link:active { transform: scale(0.96); }
+
+    .contact-links-row {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    /* 手机端纵向排列，全部占满整行 */
+    .contact-links-row .contact-link,
+    .contact-links-row .contact-link-wide {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    hr { margin: 0.8rem 0; }
+
+    /* ----- 复制反馈 ----- */
+    .copy-feedback {
+        bottom: 30px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        padding: 0.5rem 1.4rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+    .copy-feedback.show {
+        opacity: 1;
+    }
+
+    /* ----- 气泡 / 下载指南 ----- */
+    .intro-bubble {
+        border-radius: 22px;
+        padding: 1rem 1.2rem;
+        margin: 0.8rem 0;
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+    .intro-bubble:hover {
+        background: rgba(255, 255, 255, 0.88);
+    }
+    @media (prefers-color-scheme: dark) {
+        .intro-bubble:hover {
+            background: rgba(40, 60, 90, 0.92);
+        }
+    }
+
+    .dl-step h4 { font-size: 0.9rem; }
+    .dl-step p { font-size: 0.82rem; }
+    .dl-step code { font-size: 0.8rem; word-break: break-all; }
+
+    .logo-date { font-size: 0.9rem; }
+
+    /* 深色模式下头部悬停 */
+    @media (prefers-color-scheme: dark) {
+        .header-panel:hover {
+            background: rgba(40, 60, 90, 0.92) !important;
+        }
     }
 }
