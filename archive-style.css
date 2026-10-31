@@ -1,9 +1,9 @@
 /* ===== 档案页：单层全局毛玻璃 (60px) + 星空保留 ===== */
 :root {
     --body-bg-light: linear-gradient(135deg, #eef5ff 0%, #d9e6f5 100%);
-    --glass-bg-light: rgba(240, 248, 255, 0.4);           /* 存档未使用，保留 */
+    --glass-bg-light: rgba(240, 248, 255, 0.4);
     --glass-border-light: rgba(110, 160, 220, 0.45);
-    --card-glass-light: rgba(255, 255, 255, 0.78);        /* 原0.7 → 0.78 补偿强模糊 */
+    --card-glass-light: rgba(255, 255, 255, 0.78);
     --text-primary-light: #13273f;
     --text-secondary-light: #2a4a6e;
     --accent-light: #1f7be0;
@@ -12,7 +12,6 @@
     --shadow-glass: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
     --star-base-light: rgba(80, 120, 180, 0.2);
     --star-bright-light: rgba(100, 140, 200, 0.3);
-    /* 不再使用独立 blur，由全局层统一处理 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +19,7 @@
         --body-bg-light: radial-gradient(circle at 20% 30%, #0a101c, #02050a);
         --glass-bg-light: rgba(18, 22, 30, 0.6);
         --glass-border-light: rgba(140, 160, 190, 0.45);
-        --card-glass-light: rgba(28, 34, 44, 0.78);        /* 原0.7 → 0.78 */
+        --card-glass-light: rgba(28, 34, 44, 0.78);
         --text-primary-light: #f0f3f8;
         --text-secondary-light: #bfd4f0;
         --accent-light: #7ca5e0;
@@ -59,7 +58,7 @@ body {
     -webkit-backdrop-filter: blur(60px);
 }
 
-/* ---------- 星空层（仅 before/after，移除 body::after）---------- */
+/* ---------- 星空层 ---------- */
 .star-layer {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -100,7 +99,7 @@ body {
     will-change: background-position;
 }
 
-/* 深色模式：开启星空动画，仅 before/after */
+/* 深色模式：开启星空动画 */
 @media (prefers-color-scheme: dark) {
     .star-layer::before {
         background-image:
@@ -150,9 +149,8 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- 毛玻璃卡片（仅保留背景和边框，不再叠加自身模糊）---------- */
+/* ---------- 毛玻璃卡片 ---------- */
 .archive-main-card {
-    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     box-shadow: var(--shadow-glass);
@@ -171,14 +169,14 @@ body {
 
 .archive-main-card:hover {
     border-color: var(--accent-soft-light);
-    background: rgba(255, 255, 255, 0.6);        /* 原0.5→0.6 */
+    background: rgba(255, 255, 255, 0.6);
     transform: translateY(-3px);
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
     .archive-main-card:hover {
-        background: rgba(30, 40, 55, 0.85);       /* 原0.8→0.85 */
+        background: rgba(30, 40, 55, 0.85);
         box-shadow: 0 20px 40px -12px #000000dd;
     }
 }
@@ -217,8 +215,201 @@ body {
     border-radius: 40px;
     font-size: 0.8rem;
     font-weight: 600;
-    margin-left: auto;
     white-space: nowrap;
+}
+
+/* ---------- 档案排序下拉菜单 ---------- */
+.header-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.sort-dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+.sort-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.42rem 0.95rem;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border-light);
+    background: var(--card-glass-light);
+    color: var(--text-secondary-light);
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    box-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.08);
+    transition: background 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.sort-trigger:hover,
+.sort-trigger[aria-expanded="true"] {
+    border-color: var(--accent-light);
+    color: var(--accent-light);
+    background: rgba(255, 255, 255, 0.75);
+    transform: translateY(-1px);
+}
+
+@media (prefers-color-scheme: dark) {
+    .sort-trigger:hover,
+    .sort-trigger[aria-expanded="true"] {
+        background: rgba(40, 55, 75, 0.85);
+    }
+}
+
+.sort-trigger-icon {
+    font-size: 0.78rem;
+    color: var(--accent-soft-light);
+}
+
+.sort-caret {
+    font-size: 0.65rem;
+    color: var(--accent-soft-light);
+    transition: transform 0.25s ease;
+}
+
+.sort-trigger[aria-expanded="true"] .sort-caret {
+    transform: rotate(180deg);
+}
+
+/* ---------- 下拉面板：强制居中 ---------- */
+.sort-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%; 
+    right: auto; /* 关键：清除可能残留的右对齐属性 */
+    min-width: 260px;
+    max-width: calc(100vw - 2.5rem);
+    padding: 7px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.28);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    visibility: hidden;
+    /* 向左回退自身 50% 宽度，实现绝对居中 */
+    transform: translateX(-50%) translateY(-8px) scale(0.98);
+    transform-origin: top center; 
+    transition: opacity 0.2s ease, transform 0.2s ease,
+                visibility 0s linear 0.2s;
+    pointer-events: none;
+}
+
+.sort-dropdown.is-open .sort-menu {
+    opacity: 1;
+    visibility: visible;
+    /* 展开动画同样保持居中 */
+    transform: translateX(-50%) translateY(0) scale(1);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+    pointer-events: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sort-menu {
+        background: rgba(30, 38, 52, 0.96);
+        box-shadow: 0 24px 48px -12px #000000dd;
+    }
+}
+
+/* 选项 */
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    border: none;
+    border-radius: 13px;
+    background: transparent;
+    color: var(--text-secondary-light);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+    white-space: nowrap;
+}
+
+.sort-option:hover,
+.sort-option:focus-visible {
+    background: rgba(63, 140, 239, 0.12);
+    color: var(--text-primary-light);
+    outline: none;
+}
+
+.sort-option.is-active {
+    background: rgba(63, 140, 239, 0.1);
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+.sort-option-icon {
+    width: 15px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--accent-soft-light);
+    flex-shrink: 0;
+}
+
+.sort-option-text {
+    flex: 1;
+}
+
+.sort-option-hint {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--text-secondary-light);
+    opacity: 0.55;
+    padding-left: 6px;
+}
+
+.sort-option-check {
+    width: 14px;
+    font-size: 0.7rem;
+    color: var(--accent-light);
+    opacity: 0;
+    flex-shrink: 0;
+    transition: opacity 0.18s ease;
+}
+
+.sort-option.is-active .sort-option-check {
+    opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sort-option:hover,
+    .sort-option:focus-visible {
+        background: rgba(124, 165, 224, 0.15);
+    }
+    .sort-option.is-active {
+        background: rgba(124, 165, 224, 0.12);
+    }
+}
+
+/* 排序重绘时的淡入效果 */
+@keyframes archiveEntryIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.archive-entry-btn {
+    animation: archiveEntryIn 0.32s ease both;
 }
 
 /* 档案条目列表 */
@@ -229,12 +420,11 @@ body {
     flex: 1;
 }
 
-/* 档案条目按钮 - 移除自身模糊 */
+/* 档案条目按钮 */
 .archive-entry-btn {
     display: flex;
     align-items: center;
     gap: 16px;
-    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.08);
@@ -251,7 +441,7 @@ body {
     overflow: hidden;
 }
 
-/* 渐变扫光伪元素（保持不变） */
+/* 渐变扫光伪元素 */
 .archive-entry-btn::before {
     content: "";
     position: absolute;
@@ -268,7 +458,7 @@ body {
     border-color: var(--accent-light);
     transform: translateY(-4px) scale(1.015);
     box-shadow: 0 16px 32px -10px rgba(30, 110, 200, 0.3);
-    background: rgba(255, 255, 255, 0.7);          /* 原0.6→0.7 */
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .archive-entry-btn:hover::before {
@@ -282,7 +472,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .archive-entry-btn:hover {
-        background: rgba(40, 55, 75, 0.85);         /* 原0.8→0.85 */
+        background: rgba(40, 55, 75, 0.85);
         box-shadow: 0 16px 32px -10px rgba(100, 150, 220, 0.35);
     }
     .archive-entry-btn:hover::before {
@@ -375,7 +565,7 @@ body {
     transform: translateX(6px);
 }
 
-/* 占位条目 - 移除自身模糊 */
+/* 占位条目 */
 .placeholder-entry {
     display: flex;
     align-items: center;
@@ -390,13 +580,12 @@ body {
     opacity: 0.55;
     transition: all 0.3s ease;
     cursor: default;
-    /* 移除 backdrop-filter */
-    background: rgba(255, 255, 255, 0.35);          /* 原0.25→0.35 */
+    background: rgba(255, 255, 255, 0.35);
 }
 
 @media (prefers-color-scheme: dark) {
     .placeholder-entry {
-        background: rgba(255, 255, 255, 0.05);       /* 原0.03→0.05 */
+        background: rgba(255, 255, 255, 0.05);
     }
 }
 
@@ -411,7 +600,7 @@ body {
     border-color: var(--accent-soft-light);
 }
 
-/* 返回链接 - 移除自身模糊 */
+/* 返回链接 */
 .back-link-row {
     display: flex;
     justify-content: center;
@@ -427,7 +616,6 @@ body {
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9rem;
-    /* 移除 backdrop-filter */
     background: var(--card-glass-light);
     border: 1px solid var(--glass-border-light);
     color: var(--accent-light);
@@ -463,6 +651,32 @@ body {
     }
     .archive-card-header h2 { font-size: 1.3rem; }
     .archive-card-header .archive-icon { font-size: 2rem; }
+    
+    /* 头部工具条适配 */
+    .header-tools {
+        width: 100%;
+        margin-left: 0;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+    .sort-trigger {
+        font-size: 0.76rem;
+        padding: 0.38rem 0.8rem;
+    }
+    .sort-menu {
+        min-width: 230px;
+        left: 50%; 
+        right: auto;
+    }
+    .sort-option {
+        font-size: 0.78rem;
+        padding: 0.5rem 0.55rem;
+    }
+    .sort-option-hint {
+        display: none;
+    }
+    
+    /* 档案条目适配 */
     .archive-entry-btn {
         border-radius: 22px;
         padding: 1rem 1.2rem;
