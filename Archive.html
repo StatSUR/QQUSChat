@@ -103,11 +103,8 @@
         const sortOptions = Array.from(sortMenu.querySelectorAll('.sort-option'));
 
         let archives = [];
-        
-        // 【修改点】初始化为按发布时间新到旧
         let currentSort = 'publishDesc';
 
-        /* ---------- 日期解析（不依赖 JSON 新增字段） ---------- */
         function parseDateParts(value) {
             if (!value) return null;
             const nums = String(value).match(/\d+/g);
@@ -124,12 +121,10 @@
             return parts.y * 10000 + parts.m * 100 + parts.d;
         }
 
-        /* 发布时间 */
         function getPublishTime(archive) {
             return dateToNumber(parseDateParts(archive.publishDate || archive.date));
         }
 
-        /* 内容时间（兼容跨年截图逻辑） */
         function getContentTime(archive) {
             if (archive.contentDate) {
                 return dateToNumber(parseDateParts(archive.contentDate));
@@ -143,7 +138,6 @@
             return getPublishTime(archive);
         }
 
-        /* ---------- 排序器 ---------- */
         const sorters = {
             default: null,
             publishDesc: (a, b) => getPublishTime(b) - getPublishTime(a),
@@ -160,7 +154,6 @@
             })[s]);
         }
 
-        /* ---------- 渲染 ---------- */
         function render() {
             const items = archives.map((item, index) => ({ item, index }));
             const sorter = sorters[currentSort];
@@ -203,7 +196,8 @@
             sortDropdown.classList.add('is-open');
             sortTrigger.setAttribute('aria-expanded', 'true');
             const active = sortOptions.find(o => o.classList.contains('is-active')) || sortOptions[0];
-            active.focus();
+            // preventScroll 防止移动端键盘弹出时导致页面跳动
+            active.focus({ preventScroll: true });
         }
 
         function closeMenu() {
@@ -230,7 +224,7 @@
 
         sortOptions.forEach((option, i) => {
             option.addEventListener('click', (e) => {
-                e.stopPropagation();
+                e.stopPropagation(); // 阻止冒泡
                 const value = option.dataset.sort;
                 if (!value) return;
 
@@ -241,9 +235,10 @@
                     o.setAttribute('aria-selected', active ? 'true' : 'false');
                 });
                 sortLabel.textContent = option.querySelector('.sort-option-text').textContent.trim();
+                
+                option.blur(); // 移动端清除焦点残留
                 closeMenu();
                 render();
-                sortTrigger.focus();
             });
 
             option.addEventListener('keydown', (e) => {
@@ -251,33 +246,32 @@
                     e.preventDefault();
                     const dir = e.key === 'ArrowDown' ? 1 : -1;
                     const next = sortOptions[(i + dir + sortOptions.length) % sortOptions.length];
-                    next.focus();
+                    next.focus({ preventScroll: true });
                 } else if (e.key === 'Home') {
                     e.preventDefault();
-                    sortOptions[0].focus();
+                    sortOptions[0].focus({ preventScroll: true });
                 } else if (e.key === 'End') {
                     e.preventDefault();
-                    sortOptions[sortOptions.length - 1].focus();
+                    sortOptions[sortOptions.length - 1].focus({ preventScroll: true });
                 } else if (e.key === 'Escape') {
                     e.preventDefault();
                     closeMenu();
-                    sortTrigger.focus();
+                    sortTrigger.focus({ preventScroll: true });
                 }
             });
         });
 
-        sortDropdown.addEventListener('focusout', (e) => {
-            if (!sortDropdown.contains(e.relatedTarget)) closeMenu();
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!sortDropdown.contains(e.target)) closeMenu();
+        // 【关键修复】使用 pointerdown 替代 click，兼容手机触摸，精准捕获外部点击
+        document.addEventListener('pointerdown', (e) => {
+            if (!sortDropdown.contains(e.target)) {
+                closeMenu();
+            }
         });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && sortDropdown.classList.contains('is-open')) {
                 closeMenu();
-                sortTrigger.focus();
+                sortTrigger.focus({ preventScroll: true });
             }
         });
 
@@ -290,7 +284,7 @@
             .then(data => {
                 archives = Array.isArray(data) ? data : [];
                 countSpan.textContent = `📋 共 ${archives.length} 份档案`;
-                render(); // 渲染时会使用初始化的 currentSort = 'publishDesc'
+                render(); 
             })
             .catch(error => {
                 console.error('加载档案失败:', error);
