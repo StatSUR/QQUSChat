@@ -2,348 +2,301 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
-    <title>宇宙沙盘讨论群 · 星际控制台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>群历史档案 · 宇宙沙盘讨论群</title>
     <link rel="icon" href="图像1.png" type="image/png" />
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 合并样式表：桌面端 + 移动端 -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="archive-style.css">
 </head>
 <body>
-    <!-- 繁星专用层 -->
     <div class="star-layer"></div>
 
     <div class="console">
-        <!-- ==================== 头部 ==================== -->
-        <div class="header-panel">
-            <img class="group-avatar" src="主群头像重置.png" alt="群头像">
-            <div class="group-title-block">
-                <h1 id="groupNameDisplay">宇宙沙盘讨论群 | 主群 <i class="fas fa-globe-asia"></i></h1>
-                <button class="copy-btn" id="copyGroupBtn"><i class="fas fa-copy"></i> 复制群号</button>
-            </div>
-            <div class="group-meta">
-                <span><i class="fas fa-hashtag"></i> 594977633</span>
-                <span><i class="fas fa-user-group"></i> Top of 500 位成员</span>
-                <span><i class="fas fa-calendar-alt"></i> 建群时间·2022.1.24</span>
-            </div>
-        </div>
+        <div class="archive-main-card">
+            <div class="archive-card-header">
+                <i class="fas fa-box-archive archive-icon"></i>
+                <h2>群历史档案库</h2>
 
-        <!-- ==================== 选项卡主体 ==================== -->
-        <div class="tab-container">
-            <input type="radio" name="tab" id="tabInfo" checked>
-            <input type="radio" name="tab" id="tabRules">
-            <input type="radio" name="tab" id="tabResources">
+                <div class="header-tools">
+                    <div class="sort-dropdown" id="sortDropdown">
+                        <button type="button" class="sort-trigger" id="sortTrigger"
+                                aria-haspopup="listbox" aria-expanded="false" aria-controls="sortMenu">
+                            <i class="fas fa-arrow-down-wide-short sort-trigger-icon"></i>
+                            <span id="sortLabel">发布时间 · 新 → 旧</span>
+                            <i class="fas fa-chevron-down sort-caret"></i>
+                        </button>
 
-            <div class="tab-nav">
-                <label for="tabInfo"><i class="fas fa-info-circle"></i> 群·概况</label>
-                <label for="tabRules"><i class="fas fa-gavel"></i> 章程·群规</label>
-                <label for="tabResources"><i class="fas fa-download"></i> 资源与管理</label>
-            </div>
-
-            <div class="panels">
-                <!-- ---------- 概况面板 ---------- -->
-                <div class="panel panel-info">
-                    <div class="grid-2">
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-satellite"></i> 群介绍</div>
-                            <div class="intro-bubble">
-                                <i class="fas fa-quote-right" style="margin-right: 8px;"></i>
-                                本群为 <strong>宇宙沙盘 (Universe Sandbox)</strong> 的交流与资源分享群。当然，你也可以聊任何感兴趣的话题——只要不违反群规。这里聚集着模拟爱好者、天文迷与沙盘建造者。
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-item"><i class="fas fa-tag"></i> 游戏 · 宇宙沙盘 · 奥秘交流</span>
-                                <span class="stat-item"><i class="fas fa-file-lines"></i> 群规版本 U2026.929:P08-RC</span>
-                                <a class="stat-item" href="https://www.bilibili.com/video/BV1GJ411x7h7/?spm_id_from=333.337.search-card.all.click" target="_blank" style="text-decoration: none; color: inherit;">
-                                    <i class="fas fa-play-circle"></i> 跳转
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-chart-pie"></i> 快速档案</div>
-                            <ul class="rule-items" style="margin-bottom: 1rem;">
-                                <li><i class="fas fa-crown" style="color: #f5b342;"></i> 群主：RXC</li>
-                                <li><i class="fas fa-shield-alt"></i> 管理员：11 位 (资源页)</li>
-                                <li><i class="fas fa-clock"></i> 创建时间：2022.1.24</li>
-                                <li><i class="fas fa-star"></i> Lv.30 专属头衔</li>
-                            </ul>
-                            <div class="note"><i class="fas fa-lightbulb"></i> 除群规明确禁止外，自由讨论。</div>
-                            <div class="contact-links-row">
-                                <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=StarRXC@qq.com" class="contact-link" target="_blank">
-                                    <i class="fas fa-envelope"></i> 联系群主 (StarRXC@qq.com)
-                                </a>
-                                <a href="https://discord.gg/vpDGB5g47T" class="contact-link" target="_blank">
-                                    <i class="fab fa-discord"></i> 加入 Discord
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- 群Logo卡片 -->
-                        <div class="detail-card">
-                            <div style="display: flex; align-items: stretch; gap: 1rem;">
-                                <div style="display: flex; flex-direction: column; justify-content: flex-start; gap: 0.5rem; flex-shrink: 0;">
-                                    <div class="card-title" style="margin-bottom: 0;"><i class="fas fa-image"></i> 群Logo</div>
-                                    <span class="logo-date"><i class="fas fa-calendar-day"></i> 2026.8.13</span>
-                                </div>
-                                <div style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: flex-end;">
-                                    <img src="图像1.png" alt="群Logo" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ---------- 群规面板 ---------- -->
-                <div class="panel panel-rules">
-                    <div class="panel-rules-header">
-                        <i class="fas fa-scroll"></i>
-                        <h3>群规 · U2026.929:P08-RC</h3>
-                    </div>
-
-                    <!-- 一、言论规范 -->
-                    <div class="rule-chapter">
-                        <h4><i class="fas fa-message"></i> 一、言论规范</h4>
-                        <ul class="rule-items">
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>1. 禁止发布包括且不限于侮辱、诽谤、辱骂、引战、挑衅及不适宜言论（包括但不限于性别歧视等）。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>2. 禁止传播或引导发布任何色情、低俗及其他违反公序良俗的内容，包括但不限于文字、图片、链接等；若需要关于研究性学习请私聊。本群对此类内容实行严格管理，不因任何名义放宽标准。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>3. 本群严禁篡改、恶搞严肃历史，严禁讨论近期真实政治事件、人物等内容。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>4. 禁止未经管理员许可或规定时间下刷屏以及禁止无意义表情包、纯符号及无实质内容发言。</span>
-                            </li>
-                        </ul>
-                        <div class="note">
-                            <ul class="rule-items" style="list-style: none; padding-left: 0; margin: 0;">
-                                <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                    <span style="flex-shrink: 0; margin-top: 0.2em; color: var(--accent-light);">◆</span>
-                                    <span>首次违反第1条撤回并警告，第3条禁言6小时；第2条撤回并警告，并视情节禁言12小时；</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                    <span style="flex-shrink: 0; margin-top: 0.2em; color: var(--accent-light);">◆</span>
-                                    <span>第二次违反，第1条禁言10分钟，第3条禁言12小时；第2条移出本系列群聊；</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                    <span style="flex-shrink: 0; margin-top: 0.2em; color: var(--accent-light);">◆</span>
-                                    <span>第三次起，第1条每次禁言2小时，第3条移出群聊；</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                    <span style="flex-shrink: 0; margin-top: 0.2em; color: var(--accent-light);">◆</span>
-                                    <span>第4条每次禁言10分钟。</span>
-                                </li>
-                            </ul>
+                        <div class="sort-menu" id="sortMenu" role="listbox" aria-label="选择档案排序方式">
+                            <!-- 默认选中：新到旧 -->
+                            <button type="button" class="sort-option is-active" role="option" aria-selected="true" data-sort="publishDesc">
+                                <i class="fas fa-arrow-down sort-option-icon"></i>
+                                <span class="sort-option-text">发布时间 · 新 → 旧</span>
+                                <span class="sort-option-hint">最近在前</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="publishAsc">
+                                <i class="fas fa-arrow-up sort-option-icon"></i>
+                                <span class="sort-option-text">发布时间 · 旧 → 新</span>
+                                <span class="sort-option-hint">最早在前</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="contentDesc">
+                                <i class="fas fa-clock sort-option-icon"></i>
+                                <span class="sort-option-text">内容时间 · 新 → 旧</span>
+                                <span class="sort-option-hint">内容最近</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="contentAsc">
+                                <i class="fas fa-history sort-option-icon"></i>
+                                <span class="sort-option-text">内容时间 · 旧 → 新</span>
+                                <span class="sort-option-hint">内容最早</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="author">
+                                <i class="fas fa-user-pen sort-option-icon"></i>
+                                <span class="sort-option-text">写者</span>
+                                <span class="sort-option-hint">A → Z</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="title">
+                                <i class="fas fa-font sort-option-icon"></i>
+                                <span class="sort-option-text">标题</span>
+                                <span class="sort-option-hint">A → Z</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="default">
+                                <i class="fas fa-list sort-option-icon"></i>
+                                <span class="sort-option-text">默认排序</span>
+                                <span class="sort-option-hint">JSON 原顺序</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- 二、行为安全 -->
-                    <div class="rule-chapter">
-                        <h4><i class="fas fa-shield-halved"></i> 二、行为安全</h4>
-                        <ul class="rule-items">
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>5. 请不要在下载资源后立刻退群，如果发现我们会很难过的并且拉黑您作为处理哦，若因为群满员将您清理出去，您随时可以主动重新加入本群。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>6. 本群严格禁止发布任何形式的“开户”信息，严禁因个人恩怨、报复或侮辱他人而发布“挂人”、曝光他人隐私、“开盒”、恶意造谣等行为，任何违规行为都应按本群规进行合规合法处理。此类内容一经发现，无论动机如何，均立即移出本系列群聊。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>7. 请不要在本群发布广告、引流、推广等内容，发布者首次撤回，第二次撤回并禁言12小时，第三次移出本群。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>8. 禁止传播病毒、违规（包括且不限于盗号）链接及危害我们的群成员账号安全内容，违者永久移出本系列群。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>9. 禁止侵犯他人合法民事权益（包括且不限于隐私、名誉、肖像等），违者撤回或适度禁言，严重者移出本群聊。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>10. 本群禁止任何违法或涉嫌违法行为，违者直接移出本系列群聊。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>11. 禁止以任何形式规避本群对第2条内容的管理，包括但不限于暗语、缩写、谐音、表情包、头像、昵称、二维码、文件、外链、跳转等。管理员有权按实质内容从严认定并处理。</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- 三、管理与秩序 -->
-                    <div class="rule-chapter">
-                        <h4><i class="fas fa-users"></i> 三、管理与秩序</h4>
-                        <ul class="rule-items">
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>12. 原则上群等级达到Lv.30可获一次专属头衔，您随时可以申请修改一次。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>13. 在本群内搅乱局势，随意煽动“节奏”的人员建议您离开本群聊。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>14. 管理员违反本群群规板块一达6次撤职，板块二按照其相应处理建议进行处理。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>15. 管理员滥用职权视为一次违规。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>16. 本群除明确禁止内容外，其他话题都可以自由讨论。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>17. 请勿将其他群的矛盾带入本群，也请勿将本群矛盾扩散到其他群。</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- 四、附则 -->
-                    <div class="rule-chapter">
-                        <h4><i class="fas fa-file-signature"></i> 四、附则</h4>
-                        <ul class="rule-items">
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>18. 禁止盗用本群规，本群规使用仅限于RXC创建的宇宙沙盘系列交流群。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>19. 本群规中移出群成员的处罚决定，应由群主RXC本人审理，当存在自动化刷屏BOT、群主不在时由群管理员自行处理。</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 0.4em;">
-                                <i class="fas fa-circle" style="flex-shrink: 0; font-size: 0.5em; margin-top: 0.6em;"></i>
-                                <span>20. 本群对色情、低俗及违反公序良俗的内容实行零容忍。群主保留最终解释权和最终处理权。</span>
-                            </li>
-                        </ul>
-
-                        <!-- 附则底部说明与版本号（分段显示） -->
-                        <div class="note note-footer">
-                            <div class="note-text">
-                                <p>除第 2 条外，群规所列出的处罚条例均为参考。</p>
-                                <p>第 2 条从严执行，不因“初犯”“玩笑”“手滑”“私聊转发”等理由减轻。</p>
-                                <p>此群规目的为维护合法、安全的交流秩序、保护群成员权益，绝不干预大家正常发言。仅针对严重违规行为进行处理，一般问题通常会视情况提醒，不作过度干预。</p>
-                            </div>
-                            <div class="note-meta">
-                                <span><i class="fas fa-ban"></i> 严禁盗用 · 仅限于本系列群</span>
-                                <span><i class="fas fa-code-branch"></i> 版本: U2026.929:P08-RC</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ---------- 资源与管理面板 ---------- -->
-                <div class="panel panel-resources">
-                    <div class="resources-grid">
-                        <!-- 管理团队 -->
-                        <div class="detail-card">
-                            <div class="card-title"><i class="fas fa-user-astronaut"></i> 管理团队</div>
-                            <div style="margin-bottom: 1rem;">
-                                <span class="badge" style="background: #c49b1f;">群主</span>
-                                <span class="role-desc"><i class="fas fa-crown"></i> 全局决策·终审</span>
-                                <div class="admin-tag owner-tag" style="margin-top: 12px;">
-                                    <i class="fas fa-crown"></i>
-                                    <a href="https://www.starrxc.xyz" target="_blank" title="跳转RXC的博客" class="owner-link">
-                                        <img class="avatar-circle" src="群管理员头像/RXC.jpeg" alt="头像">
-                                        <span>RXC</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge">管理员 (11人)</span>
-                                <span class="role-desc"><i class="fas fa-shield-halved"></i> 秩序维护·执行群规</span>
-                            </div>
-                            <div class="admin-grid">
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/CNTiancheng.jpeg" alt="头像"><span>CNTian Cheng</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/HD 38529 c.jpeg" alt="头像"><span>HD 38529 c</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/木可西金.jpeg" alt="头像"><span>木可西金</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/无衣白常.jpeg" alt="头像"><span>无衣白常</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/得偿所欲.jpeg" alt="头像"><span>得偿所欲</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/若耶姆.jpeg" alt="头像"><span>若耶姆</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/太空中的黑洞-白龙曰.jpeg" alt="头像"><span>太空中的黑洞-白龙曰</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/星晖.jpeg" alt="头像"><span>星晖</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/永恒的黑暗.jpeg" alt="头像"><span>永恒的黑暗</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/云天明.jpeg" alt="头像"><span>云天明</span></div>
-                                <div class="admin-tag"><i class="fas fa-shield"></i><img class="avatar-circle" src="群管理员头像/中川ゆうき.jpeg" alt="头像"><span>中川ゆうき</span></div>
-                            </div>
-                        </div>
-
-                        <!-- 下载指南 -->
-                        <div class="download-guide">
-                            <div class="card-title"><i class="fas fa-cloud-download-alt"></i> 🎯 宇宙沙盘游戏下载指南</div>
-                            <div class="dl-step">
-                                <h4><i class="fas fa-folder-open"></i> 1️⃣ 找群文件 📁</h4>
-                                <p>打开QQ → 右上角三个小方块 → 点击小菱形图标 ✨<br>进入后找到"宇宙沙盘"文件夹 🌌<br>选择 <strong>U36版本</strong> 📦 下载</p>
-                            </div>
-                            <div class="dl-step">
-                                <h4><i class="fas fa-file-zipper"></i> 2️⃣ 下载 &amp; 解压 📥🗜️</h4>
-                                <p>下载完成后，打开"下载文件夹" 📂（或你保存的位置）<br>找到压缩包（.7z）<br>用解压软件（如WinRAR / 7-Zip等）解压<br>解压后找到 <code>Universe Sandbox x64.exe</code> 🚀<br>双击即可运行游戏</p>
-                            </div>
-                            <div class="dl-step">
-                                <h4><i class="fas fa-comment-dots"></i> 3️⃣ 群规则说明 💬</h4>
-                                <p>本群为资源讨论群 🎮<br>不仅限于宇宙沙盘 🌌<br>其他游戏或资源内容也可以讨论<br>❗禁止发布违规内容</p>
-                            </div>
-                            <hr>
-                            <div><i class="fas fa-exclamation-triangle" style="color: #f4b942;"></i> 请不要下载后立刻退群，否则可能被拉黑。若因满员被清，欢迎重加。</div>
-                            <hr>
-                            <div><i class="fas fa-tags"></i> 群分类：游戏 · 宇宙沙盘 · 奥秘交流</div>
-
-                            <div class="contact-links-row">
-                                <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=StarRXC@qq.com" class="contact-link" target="_blank">
-                                    <i class="fas fa-envelope"></i> 联系群主 (StarRXC@qq.com)
-                                </a>
-                                <a href="https://discord.gg/vpDGB5g47T" class="contact-link" target="_blank">
-                                    <i class="fab fa-discord"></i> 加入 Discord 服务器
-                                </a>
-                                <a href="Archive.html" class="contact-link contact-link-wide" target="_blank">
-                                    <i class="fas fa-box-archive"></i> 群历史档案
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <span class="badge-count" id="archiveCount">📋 共 0 份档案</span>
                 </div>
             </div>
 
-            <div class="footer-bar">
-                <span><i class="fas fa-copyright"></i> 宇宙沙盘讨论群 · 主群 594977633</span>
-                <span><i class="fas fa-envelope"></i> 如有疑问请联系管理员</span>
+            <div class="archive-entries" id="archiveList">
+                <div class="placeholder-entry">
+                    <i class="fas fa-hourglass-half"></i>
+                    <span>更多历史档案等待归档...</span>
+                </div>
+            </div>
+
+            <div class="back-link-row">
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> 返回主控制台
+                </a>
             </div>
         </div>
     </div>
 
-    <div id="copyFeedback" class="copy-feedback">✨ 群号已复制 ✨</div>
-
     <script>
-        (function () {
-            const copyBtn  = document.getElementById('copyGroupBtn');
-            const feedback = document.getElementById('copyFeedback');
-            const groupNumber = "594977633";
-            let timer = null;
+    (function () {
+        const countSpan = document.getElementById('archiveCount');
+        const listContainer = document.getElementById('archiveList');
+        const sortDropdown = document.getElementById('sortDropdown');
+        const sortTrigger = document.getElementById('sortTrigger');
+        const sortMenu = document.getElementById('sortMenu');
+        const sortLabel = document.getElementById('sortLabel');
+        const sortOptions = Array.from(sortMenu.querySelectorAll('.sort-option'));
 
-            const show = () => {
-                if (timer) clearTimeout(timer);
-                feedback.classList.add('show');
-                timer = setTimeout(() => feedback.classList.remove('show'), 1500);
+        let archives = [];
+        
+        // 【修改点】初始化为按发布时间新到旧
+        let currentSort = 'publishDesc';
+
+        /* ---------- 日期解析（不依赖 JSON 新增字段） ---------- */
+        function parseDateParts(value) {
+            if (!value) return null;
+            const nums = String(value).match(/\d+/g);
+            if (!nums || !nums.length) return null;
+            return {
+                y: parseInt(nums[0], 10) || 0,
+                m: parseInt(nums[1], 10) || 1,
+                d: parseInt(nums[2], 10) || 1
             };
+        }
 
-            const copy = () => navigator.clipboard.writeText(groupNumber)
-                .then(show)
-                .catch(() => alert('手动复制: ' + groupNumber));
+        function dateToNumber(parts) {
+            if (!parts) return 0;
+            return parts.y * 10000 + parts.m * 100 + parts.d;
+        }
 
-            copyBtn.addEventListener('click', copy);
-            document.getElementById('groupNameDisplay').addEventListener('click', copy);
-        })();
+        /* 发布时间 */
+        function getPublishTime(archive) {
+            return dateToNumber(parseDateParts(archive.publishDate || archive.date));
+        }
+
+        /* 内容时间（兼容跨年截图逻辑） */
+        function getContentTime(archive) {
+            if (archive.contentDate) {
+                return dateToNumber(parseDateParts(archive.contentDate));
+            }
+            const title = String(archive.title || '');
+            const range = title.match(/(\d{4})\s*[-–—~至]\s*(\d{4})/);
+            if (range) {
+                const endYear = parseInt(range[2], 10);
+                return endYear * 10000 + 101; 
+            }
+            return getPublishTime(archive);
+        }
+
+        /* ---------- 排序器 ---------- */
+        const sorters = {
+            default: null,
+            publishDesc: (a, b) => getPublishTime(b) - getPublishTime(a),
+            publishAsc:  (a, b) => getPublishTime(a) - getPublishTime(b),
+            contentDesc: (a, b) => getContentTime(b) - getContentTime(a),
+            contentAsc:  (a, b) => getContentTime(a) - getContentTime(b),
+            author: (a, b) => String(a.author || '').localeCompare(String(b.author || ''), 'zh-Hans-CN'),
+            title:  (a, b) => String(a.title || '').localeCompare(String(b.title || ''), 'zh-Hans-CN')
+        };
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"']/g, s => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[s]);
+        }
+
+        /* ---------- 渲染 ---------- */
+        function render() {
+            const items = archives.map((item, index) => ({ item, index }));
+            const sorter = sorters[currentSort];
+
+            if (sorter) {
+                items.sort((x, y) => {
+                    const r = sorter(x.item, y.item);
+                    return r !== 0 ? r : x.index - y.index; 
+                });
+            }
+
+            listContainer.querySelectorAll('.archive-entry-btn').forEach(el => el.remove());
+            const placeholder = listContainer.querySelector('.placeholder-entry');
+
+            items.forEach(({ item: archive }, i) => {
+                const link = document.createElement('a');
+                link.href = archive.link;
+                link.className = 'archive-entry-btn';
+                link.title = `点击查看：${archive.title}`;
+                link.style.animationDelay = `${Math.min(i * 28, 280)}ms`;
+                link.innerHTML = `
+                    <div class="entry-icon-circle">
+                        <i class="fas ${escapeHTML(archive.icon)}"></i>
+                    </div>
+                    <div class="entry-info">
+                        <span class="entry-title">${escapeHTML(archive.title)}</span>
+                        <div class="entry-meta">
+                            <span class="meta-date"><i class="fas fa-calendar-check"></i> ${escapeHTML(archive.date)}</span>
+                            <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: ${escapeHTML(archive.author)}</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right entry-arrow"></i>
+                `;
+                listContainer.insertBefore(link, placeholder);
+            });
+        }
+
+        /* ---------- 下拉菜单交互 ---------- */
+        function openMenu() {
+            sortDropdown.classList.add('is-open');
+            sortTrigger.setAttribute('aria-expanded', 'true');
+            const active = sortOptions.find(o => o.classList.contains('is-active')) || sortOptions[0];
+            active.focus();
+        }
+
+        function closeMenu() {
+            sortDropdown.classList.remove('is-open');
+            sortTrigger.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleMenu() {
+            if (sortDropdown.classList.contains('is-open')) closeMenu();
+            else openMenu();
+        }
+
+        sortTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        sortTrigger.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                openMenu();
+            }
+        });
+
+        sortOptions.forEach((option, i) => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = option.dataset.sort;
+                if (!value) return;
+
+                currentSort = value;
+                sortOptions.forEach(o => {
+                    const active = o === option;
+                    o.classList.toggle('is-active', active);
+                    o.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                sortLabel.textContent = option.querySelector('.sort-option-text').textContent.trim();
+                closeMenu();
+                render();
+                sortTrigger.focus();
+            });
+
+            option.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const dir = e.key === 'ArrowDown' ? 1 : -1;
+                    const next = sortOptions[(i + dir + sortOptions.length) % sortOptions.length];
+                    next.focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    sortOptions[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    sortOptions[sortOptions.length - 1].focus();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeMenu();
+                    sortTrigger.focus();
+                }
+            });
+        });
+
+        sortDropdown.addEventListener('focusout', (e) => {
+            if (!sortDropdown.contains(e.relatedTarget)) closeMenu();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!sortDropdown.contains(e.target)) closeMenu();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sortDropdown.classList.contains('is-open')) {
+                closeMenu();
+                sortTrigger.focus();
+            }
+        });
+
+        /* ---------- 加载档案 ---------- */
+        fetch('archives.json')
+            .then(response => {
+                if (!response.ok) throw new Error('无法加载档案列表');
+                return response.json();
+            })
+            .then(data => {
+                archives = Array.isArray(data) ? data : [];
+                countSpan.textContent = `📋 共 ${archives.length} 份档案`;
+                render(); // 渲染时会使用初始化的 currentSort = 'publishDesc'
+            })
+            .catch(error => {
+                console.error('加载档案失败:', error);
+                countSpan.textContent = '📋 加载失败';
+            });
+    })();
     </script>
 </body>
 </html>
