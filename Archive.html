@@ -6,7 +6,6 @@
     <title>群历史档案 · 宇宙沙盘讨论群</title>
     <link rel="icon" href="图像1.png" type="image/png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 引入独立优化样式表 -->
     <link rel="stylesheet" href="archive-style.css">
 </head>
 <body>
@@ -17,7 +16,65 @@
             <div class="archive-card-header">
                 <i class="fas fa-box-archive archive-icon"></i>
                 <h2>群历史档案库</h2>
-                <span class="badge-count" id="archiveCount">📋 共 0 份档案</span>
+
+                <div class="header-tools">
+                    <div class="sort-dropdown" id="sortDropdown">
+                        <button type="button" class="sort-trigger" id="sortTrigger"
+                                aria-haspopup="listbox" aria-expanded="false" aria-controls="sortMenu">
+                            <i class="fas fa-arrow-down-wide-short sort-trigger-icon"></i>
+                            <span id="sortLabel">发布时间 · 新 → 旧</span>
+                            <i class="fas fa-chevron-down sort-caret"></i>
+                        </button>
+
+                        <div class="sort-menu" id="sortMenu" role="listbox" aria-label="选择档案排序方式">
+                            <!-- 默认选中：新到旧 -->
+                            <button type="button" class="sort-option is-active" role="option" aria-selected="true" data-sort="publishDesc">
+                                <i class="fas fa-arrow-down sort-option-icon"></i>
+                                <span class="sort-option-text">发布时间 · 新 → 旧</span>
+                                <span class="sort-option-hint">最近在前</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="publishAsc">
+                                <i class="fas fa-arrow-up sort-option-icon"></i>
+                                <span class="sort-option-text">发布时间 · 旧 → 新</span>
+                                <span class="sort-option-hint">最早在前</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="contentDesc">
+                                <i class="fas fa-clock sort-option-icon"></i>
+                                <span class="sort-option-text">内容时间 · 新 → 旧</span>
+                                <span class="sort-option-hint">内容最近</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="contentAsc">
+                                <i class="fas fa-history sort-option-icon"></i>
+                                <span class="sort-option-text">内容时间 · 旧 → 新</span>
+                                <span class="sort-option-hint">内容最早</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="author">
+                                <i class="fas fa-user-pen sort-option-icon"></i>
+                                <span class="sort-option-text">写者</span>
+                                <span class="sort-option-hint">A → Z</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="title">
+                                <i class="fas fa-font sort-option-icon"></i>
+                                <span class="sort-option-text">标题</span>
+                                <span class="sort-option-hint">A → Z</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                            <button type="button" class="sort-option" role="option" aria-selected="false" data-sort="default">
+                                <i class="fas fa-list sort-option-icon"></i>
+                                <span class="sort-option-text">默认排序</span>
+                                <span class="sort-option-hint">JSON 原顺序</span>
+                                <i class="fas fa-check sort-option-check"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <span class="badge-count" id="archiveCount">📋 共 0 份档案</span>
+                </div>
             </div>
 
             <div class="archive-entries" id="archiveList">
@@ -36,44 +93,210 @@
     </div>
 
     <script>
-        (function() {
-            const countSpan = document.getElementById('archiveCount');
-            const listContainer = document.getElementById('archiveList');
+    (function () {
+        const countSpan = document.getElementById('archiveCount');
+        const listContainer = document.getElementById('archiveList');
+        const sortDropdown = document.getElementById('sortDropdown');
+        const sortTrigger = document.getElementById('sortTrigger');
+        const sortMenu = document.getElementById('sortMenu');
+        const sortLabel = document.getElementById('sortLabel');
+        const sortOptions = Array.from(sortMenu.querySelectorAll('.sort-option'));
 
-            fetch('archives.json')
-                .then(response => {
-                    if (!response.ok) throw new Error('无法加载档案列表');
-                    return response.json();
-                })
-                .then(archives => {
-                    countSpan.textContent = `📋 共 ${archives.length} 份档案`;
-                    archives.forEach(archive => {
-                        const link = document.createElement('a');
-                        link.href = archive.link;
-                        link.className = 'archive-entry-btn';
-                        link.title = `点击查看：${archive.title}`;
-                        link.innerHTML = `
-                            <div class="entry-icon-circle">
-                                <i class="fas ${archive.icon}"></i>
-                            </div>
-                            <div class="entry-info">
-                                <span class="entry-title">${archive.title}</span>
-                                <div class="entry-meta">
-                                    <span class="meta-date"><i class="fas fa-calendar-check"></i> ${archive.date}</span>
-                                    <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: ${archive.author}</span>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-right entry-arrow"></i>
-                        `;
-                        const placeholder = listContainer.querySelector('.placeholder-entry');
-                        listContainer.insertBefore(link, placeholder);
-                    });
-                })
-                .catch(error => {
-                    console.error('加载档案失败:', error);
-                    countSpan.textContent = '📋 加载失败';
+        let archives = [];
+        
+        // 【修改点】初始化为按发布时间新到旧
+        let currentSort = 'publishDesc';
+
+        /* ---------- 日期解析（不依赖 JSON 新增字段） ---------- */
+        function parseDateParts(value) {
+            if (!value) return null;
+            const nums = String(value).match(/\d+/g);
+            if (!nums || !nums.length) return null;
+            return {
+                y: parseInt(nums[0], 10) || 0,
+                m: parseInt(nums[1], 10) || 1,
+                d: parseInt(nums[2], 10) || 1
+            };
+        }
+
+        function dateToNumber(parts) {
+            if (!parts) return 0;
+            return parts.y * 10000 + parts.m * 100 + parts.d;
+        }
+
+        /* 发布时间 */
+        function getPublishTime(archive) {
+            return dateToNumber(parseDateParts(archive.publishDate || archive.date));
+        }
+
+        /* 内容时间（兼容跨年截图逻辑） */
+        function getContentTime(archive) {
+            if (archive.contentDate) {
+                return dateToNumber(parseDateParts(archive.contentDate));
+            }
+            const title = String(archive.title || '');
+            const range = title.match(/(\d{4})\s*[-–—~至]\s*(\d{4})/);
+            if (range) {
+                const endYear = parseInt(range[2], 10);
+                return endYear * 10000 + 101; 
+            }
+            return getPublishTime(archive);
+        }
+
+        /* ---------- 排序器 ---------- */
+        const sorters = {
+            default: null,
+            publishDesc: (a, b) => getPublishTime(b) - getPublishTime(a),
+            publishAsc:  (a, b) => getPublishTime(a) - getPublishTime(b),
+            contentDesc: (a, b) => getContentTime(b) - getContentTime(a),
+            contentAsc:  (a, b) => getContentTime(a) - getContentTime(b),
+            author: (a, b) => String(a.author || '').localeCompare(String(b.author || ''), 'zh-Hans-CN'),
+            title:  (a, b) => String(a.title || '').localeCompare(String(b.title || ''), 'zh-Hans-CN')
+        };
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"']/g, s => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[s]);
+        }
+
+        /* ---------- 渲染 ---------- */
+        function render() {
+            const items = archives.map((item, index) => ({ item, index }));
+            const sorter = sorters[currentSort];
+
+            if (sorter) {
+                items.sort((x, y) => {
+                    const r = sorter(x.item, y.item);
+                    return r !== 0 ? r : x.index - y.index; 
                 });
-        })();
+            }
+
+            listContainer.querySelectorAll('.archive-entry-btn').forEach(el => el.remove());
+            const placeholder = listContainer.querySelector('.placeholder-entry');
+
+            items.forEach(({ item: archive }, i) => {
+                const link = document.createElement('a');
+                link.href = archive.link;
+                link.className = 'archive-entry-btn';
+                link.title = `点击查看：${archive.title}`;
+                link.style.animationDelay = `${Math.min(i * 28, 280)}ms`;
+                link.innerHTML = `
+                    <div class="entry-icon-circle">
+                        <i class="fas ${escapeHTML(archive.icon)}"></i>
+                    </div>
+                    <div class="entry-info">
+                        <span class="entry-title">${escapeHTML(archive.title)}</span>
+                        <div class="entry-meta">
+                            <span class="meta-date"><i class="fas fa-calendar-check"></i> ${escapeHTML(archive.date)}</span>
+                            <span class="meta-author"><i class="fas fa-pen-fancy"></i> 写者: ${escapeHTML(archive.author)}</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right entry-arrow"></i>
+                `;
+                listContainer.insertBefore(link, placeholder);
+            });
+        }
+
+        /* ---------- 下拉菜单交互 ---------- */
+        function openMenu() {
+            sortDropdown.classList.add('is-open');
+            sortTrigger.setAttribute('aria-expanded', 'true');
+            const active = sortOptions.find(o => o.classList.contains('is-active')) || sortOptions[0];
+            active.focus();
+        }
+
+        function closeMenu() {
+            sortDropdown.classList.remove('is-open');
+            sortTrigger.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleMenu() {
+            if (sortDropdown.classList.contains('is-open')) closeMenu();
+            else openMenu();
+        }
+
+        sortTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        sortTrigger.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                openMenu();
+            }
+        });
+
+        sortOptions.forEach((option, i) => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = option.dataset.sort;
+                if (!value) return;
+
+                currentSort = value;
+                sortOptions.forEach(o => {
+                    const active = o === option;
+                    o.classList.toggle('is-active', active);
+                    o.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                sortLabel.textContent = option.querySelector('.sort-option-text').textContent.trim();
+                closeMenu();
+                render();
+                sortTrigger.focus();
+            });
+
+            option.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const dir = e.key === 'ArrowDown' ? 1 : -1;
+                    const next = sortOptions[(i + dir + sortOptions.length) % sortOptions.length];
+                    next.focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    sortOptions[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    sortOptions[sortOptions.length - 1].focus();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeMenu();
+                    sortTrigger.focus();
+                }
+            });
+        });
+
+        sortDropdown.addEventListener('focusout', (e) => {
+            if (!sortDropdown.contains(e.relatedTarget)) closeMenu();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!sortDropdown.contains(e.target)) closeMenu();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sortDropdown.classList.contains('is-open')) {
+                closeMenu();
+                sortTrigger.focus();
+            }
+        });
+
+        /* ---------- 加载档案 ---------- */
+        fetch('archives.json')
+            .then(response => {
+                if (!response.ok) throw new Error('无法加载档案列表');
+                return response.json();
+            })
+            .then(data => {
+                archives = Array.isArray(data) ? data : [];
+                countSpan.textContent = `📋 共 ${archives.length} 份档案`;
+                render(); // 渲染时会使用初始化的 currentSort = 'publishDesc'
+            })
+            .catch(error => {
+                console.error('加载档案失败:', error);
+                countSpan.textContent = '📋 加载失败';
+            });
+    })();
     </script>
 </body>
 </html>
