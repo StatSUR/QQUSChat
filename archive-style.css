@@ -251,6 +251,8 @@ body {
     transition: background 0.2s ease, border-color 0.2s ease,
                 color 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
+    /* 移动端消除 300ms 延迟 */
+    touch-action: manipulation;
 }
 
 .sort-trigger:hover,
@@ -288,9 +290,11 @@ body {
     position: absolute;
     top: calc(100% + 10px);
     left: 50%; 
-    right: auto; /* 关键：清除可能残留的右对齐属性 */
+    right: auto; 
     min-width: 260px;
     max-width: calc(100vw - 2.5rem);
+    max-height: 60vh; /* 防止手机横屏时超出屏幕 */
+    overflow-y: auto; /* 支持内容滚动 */
     padding: 7px;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.94);
@@ -302,7 +306,6 @@ body {
     gap: 2px;
     opacity: 0;
     visibility: hidden;
-    /* 向左回退自身 50% 宽度，实现绝对居中 */
     transform: translateX(-50%) translateY(-8px) scale(0.98);
     transform-origin: top center; 
     transition: opacity 0.2s ease, transform 0.2s ease,
@@ -313,7 +316,6 @@ body {
 .sort-dropdown.is-open .sort-menu {
     opacity: 1;
     visibility: visible;
-    /* 展开动画同样保持居中 */
     transform: translateX(-50%) translateY(0) scale(1);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
     pointer-events: auto;
@@ -344,6 +346,7 @@ body {
     cursor: pointer;
     transition: background 0.18s ease, color 0.18s ease;
     white-space: nowrap;
+    touch-action: manipulation;
 }
 
 .sort-option:hover,
@@ -664,7 +667,7 @@ body {
         padding: 0.38rem 0.8rem;
     }
     .sort-menu {
-        min-width: 230px;
+        min-width: 220px;
         left: 50%; 
         right: auto;
     }
